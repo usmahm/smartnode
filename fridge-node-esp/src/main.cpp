@@ -14,9 +14,9 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 #define countof(a) (sizeof(a) / sizeof(a[0]))
 
 // HTTP
-const char* ssid = "raspit";
-const char* password = "raspit1ras";
-const String server_url = "http://192.168.0.145:3001/";
+const char* ssid = "REPLACE";
+const char* password = "REPLACE";
+const String server_url = "REPLACE";
 enum RELAY_ID { FRIDGE };
 
 // Relay
