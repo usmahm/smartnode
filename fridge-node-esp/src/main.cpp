@@ -14,18 +14,18 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 #define countof(a) (sizeof(a) / sizeof(a[0]))
 
 // HTTP
-const char* ssid = "REPLACE";
-const char* password = "REPLACE";
+const char* ssid = "raspit";
+const char* password = "raspit1ras";
 const String server_url = "REPLACE";
 enum RELAY_ID { FRIDGE };
 
 // Relay
-const int fridgeRelay = 5;
+const int fridgeRelay = 5; 
 unsigned long on_millis;
-unsigned long on_duration = 3.5 * 60 * 60 * 1000;
+unsigned long on_duration = 16200000;
 bool is_on = false;
-const uint8_t on_hour = 12;
-const uint8_t on_minute = 0;
+const uint8_t on_hour = 10;
+const uint8_t on_minute = 5;
 
 // Server
 AsyncWebServer server(80);
@@ -162,6 +162,44 @@ void setup() {
   RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
   printDateTime(compiled);
   println("");
+
+  if (!Rtc.IsDateTimeValid()) 
+    {
+        // Common Causes:
+        //    1) first time you ran and the device wasn't running yet
+        //    2) the battery on the device is low or even missing
+
+        Serial.println("RTC lost confidence in the DateTime!");
+        Rtc.SetDateTime(compiled);
+    }
+
+    if (Rtc.GetIsWriteProtected())
+    {
+        Serial.println("RTC was write protected, enabling writing now");
+        Rtc.SetIsWriteProtected(false);
+    }
+
+    if (!Rtc.GetIsRunning())
+    {
+        Serial.println("RTC was not actively running, starting now");
+        Rtc.SetIsRunning(true);
+    }
+
+    RtcDateTime now = Rtc.GetDateTime();
+    Rtc.SetDateTime(compiled);
+    if (now < compiled) 
+    {
+        Serial.println("RTC is older than compile time!  (Updating DateTime)");
+        Rtc.SetDateTime(compiled);
+    }
+    else if (now > compiled) 
+    {
+        Serial.println("RTC is newer than compile time. (this is expected)");
+    }
+    else if (now == compiled) 
+    {
+        Serial.println("RTC is the same as compile time! (not expected but all is fine)");
+    }
 
   WiFi.begin(ssid, password);
   println("Connecting to wifi");
