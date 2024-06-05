@@ -1,259 +1,63 @@
 #include <Arduino.h>
-
-#include <ThreeWire.h>  
-#include <RtcDS1302.h>
-#include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
-#include <WiFiClient.h>
-#include <ESPAsyncWebServer.h>
-#include <WebSerial.h>
-
-ThreeWire myWire(D4,D5,D2); // IO, SCLK, CE
-RtcDS1302<ThreeWire> Rtc(myWire);
-
-#define countof(a) (sizeof(a) / sizeof(a[0]))
+#include "customLogger.h"
+#include "webServer.h"
+#include "wifi.h"
+#include "httpFunctions.h"
 
 // HTTP
-const char* ssid = "raspit";
-const char* password = "raspit1ras";
 const String server_url = "REPLACE";
 enum RELAY_ID { FRIDGE };
 
 // Relay
-const int fridgeRelay = 5; 
 unsigned long on_millis;
 unsigned long on_duration = 16200000;
 bool is_on = false;
 const uint8_t on_hour = 10;
 const uint8_t on_minute = 5;
 
-// Server
-AsyncWebServer server(80);
-
-void print(auto data) {
-  Serial.print(data);
-  if (WiFi.status() == WL_CONNECTED) {
-    WebSerial.print(data);
-  }
-}
-
-void println(auto data) {
-  Serial.println(data);
-  if (WiFi.status() == WL_CONNECTED) {
-    WebSerial.println(data);
-  }
-}
-
-void printDateTime(const RtcDateTime& dt)
-{
-    char datestring[20];
-
-    snprintf_P(datestring, 
-            countof(datestring),
-            PSTR("%02u/%02u/%04u %02u:%02u:%02u"),
-            dt.Month(),
-            dt.Day(),
-            dt.Year(),
-            dt.Hour(),
-            dt.Minute(),
-            dt.Second() );
-    println(datestring);
-}
-
-void sendUrlEncodedPostRequest(String path, String request_body) {
-    String endpoint = server_url + path;
-
-    WiFiClient client;
-    HTTPClient http;
-
-    http.begin(client, endpoint);
-
-    println(request_body);
-
-    http.addHeader("Content-Type", "application/json");
-
-    // Data to send with HTTP POST
-    int httpResponseCode = http.POST(request_body);
-
-    print("HTTP Response code: ");
-    println(httpResponseCode);
-
-    http.end();
-}
-
-void sendRelayStatus(const RELAY_ID relay_id, const bool status) {
-  if (WiFi.status() == WL_CONNECTED) {
-    String request_body;
-
-    switch (relay_id)
-    {
-    case RELAY_ID::FRIDGE:
-      request_body = "{\"fridge_relay_status\":\"" + String(status) + "\"}";
-      break;
-    default:
-      println("Relay id not handled in sendRelayStatus()");
-      return;
-      break;
-    }
-
-    sendUrlEncodedPostRequest("relay_status", request_body);
-  } else {
-    println("WiFi Disconnected");
-  }
-}
-
-void postRelayStatusHandler(AsyncWebServerRequest *request) {
-  println("In postRelayStatusHandler");
-
-  RELAY_ID relay_id;
-  String status;
-  int relay_to_toggle;
-
-  if (request->hasParam("fridge_relay_status")) {
-    relay_id = RELAY_ID::FRIDGE;
-    status = request->getParam("fridge_relay_status")->value();
-  }
-
-  auto state_to_write = (status == "on") ? HIGH : LOW;
-
-  switch (relay_id)
-  {
-    case RELAY_ID::FRIDGE:
-      println("Fridge toggled: ");
-      relay_to_toggle = fridgeRelay;
-      break;
-    default:
-      println("Relay id not handled in postRelayStatusHandler()");
-      return;
-      break;
-  }
-
-  print("Toggling Relay: ");
-  print(relay_to_toggle);
-  print(" -- ");
-  println(state_to_write);
-  println("   new.   ");
-  digitalWrite(relay_to_toggle, state_to_write);
-
-  request->send(200, "text/plain", "Success!");
-}
-
-void recvMsg(uint8_t *data, size_t len){
-  WebSerial.println("Received Data...");
-  String d = "";
-  for(int i=0; i < len; i++){
-    d += char(data[i]);
-  }
-  WebSerial.println(d);
-  
-  print("Received from remote: ");
-  println(d);
-}
-
 void setup() {
   Serial.begin(115200);
-  pinMode(fridgeRelay, OUTPUT);
+  pinMode(RELAY_PIN, OUTPUT);
   
-  print(__DATE__);
-  println(__TIME__);
-
-  Rtc.Begin();
-
-  RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
-  printDateTime(compiled);
-  println("");
-
-  if (!Rtc.IsDateTimeValid()) 
-    {
-        // Common Causes:
-        //    1) first time you ran and the device wasn't running yet
-        //    2) the battery on the device is low or even missing
-
-        Serial.println("RTC lost confidence in the DateTime!");
-        Rtc.SetDateTime(compiled);
-    }
-
-    if (Rtc.GetIsWriteProtected())
-    {
-        Serial.println("RTC was write protected, enabling writing now");
-        Rtc.SetIsWriteProtected(false);
-    }
-
-    if (!Rtc.GetIsRunning())
-    {
-        Serial.println("RTC was not actively running, starting now");
-        Rtc.SetIsRunning(true);
-    }
-
-    RtcDateTime now = Rtc.GetDateTime();
-    Rtc.SetDateTime(compiled);
-    if (now < compiled) 
-    {
-        Serial.println("RTC is older than compile time!  (Updating DateTime)");
-        Rtc.SetDateTime(compiled);
-    }
-    else if (now > compiled) 
-    {
-        Serial.println("RTC is newer than compile time. (this is expected)");
-    }
-    else if (now == compiled) 
-    {
-        Serial.println("RTC is the same as compile time! (not expected but all is fine)");
-    }
-
-  WiFi.begin(ssid, password);
-  println("Connecting to wifi");
-
-  WebSerial.begin(&server);
-  WebSerial.msgCallback(recvMsg);
-  WebSerial.println("Connected to Remote Serial!");
-
-  while(WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    print(".");
-  }
-
-  println("");
-  print("Connected to WiFi network with IP Address: ");
-  println(WiFi.localIP());
+  initializeWifi();
   
-  DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
-  server.begin();
+  initializeWebServer();
+  
+  CustomLogger::initializeCustomLogger();
 
-  server.on("/relay_status", HTTP_POST, [](AsyncWebServerRequest *request) {
-    postRelayStatusHandler(request);
-  });
+  CustomLogger::print(__DATE__);
+  CustomLogger::println(__TIME__);
 }
 
 void loop() {
-  RtcDateTime datetime = Rtc.GetDateTime();
-  printDateTime(datetime);
+  // RtcDateTime datetime = Rtc.GetDateTime();
+  // printDateTime(datetime);
 
-  println("---------");
-  println(on_millis);
-  println(millis());
-  println("---------");
+  CustomLogger::println("---------");
+  CustomLogger::println(on_millis);
+  CustomLogger::println(millis());
+  CustomLogger::println("---------");
   
-  if (datetime.Hour() == on_hour && datetime.Minute() == on_minute && !is_on) {
-    digitalWrite(fridgeRelay, HIGH);
+  // if (datetime.Hour() == on_hour && datetime.Minute() == on_minute && !is_on) {
+  //   digitalWrite(RELAY_PIN, HIGH);
     
-    on_millis = millis();
-    is_on = true;
+  //   on_millis = millis();
+  //   is_on = true;
 
-    println(datetime.Hour());
-    println(datetime.Minute());
-    print("Current Flowing for: ");
-    println(on_duration);
+  //   CustomLogger::println(datetime.Hour());
+  //   CustomLogger::println(datetime.Minute());
+  //   CustomLogger::print("Current Flowing for: ");
+  //   CustomLogger::println(on_duration);
 
-    sendRelayStatus(RELAY_ID::FRIDGE, "on");
-  }
+  //   postRelayStatus("on");
+  // }
 
-  if (is_on && (millis() - on_millis >= on_duration)) {
-    digitalWrite(fridgeRelay, LOW);
-    println("Current turned off");
-    is_on = false;
-    sendRelayStatus(RELAY_ID::FRIDGE, "off");
-  }
+  // if (is_on && (millis() - on_millis >= on_duration)) {
+  //   digitalWrite(RELAY_PIN, LOW);
+  //   CustomLogger::println("Current turned off");
+  //   is_on = false;
+  //   postRelayStatus("off");
+  // }
   
   delay(5000);
 }
