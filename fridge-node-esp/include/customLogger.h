@@ -3,17 +3,22 @@
 #include <WebSerial.h>
 #include "webServer.h"
 
+extern boolean initialized;
 namespace CustomLogger {
   template <typename T>
   void print(T data) {
-    WebSerial.print(data);
     Serial.print(data);
+
+    if (initialized)
+      WebSerial.print(data);
   };
 
   template <typename T>
   void println(T data) {
-    WebSerial.println(data);
     Serial.println(data);
+
+    if (initialized)
+      WebSerial.println(data);
   };
   
   void initializeCustomLogger();

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ESP8266HTTPClient.h>
 #include "customLogger.h"
 #include "env.h"

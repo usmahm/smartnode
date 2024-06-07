@@ -3,17 +3,14 @@
 #include "webServer.h"
 #include "wifi.h"
 #include "httpFunctions.h"
-
-// HTTP
-const String server_url = "REPLACE";
-enum RELAY_ID { FRIDGE };
+#include "timeFunctions.h"
 
 // Relay
 unsigned long on_millis;
 unsigned long on_duration = 16200000;
 bool is_on = false;
-const uint8_t on_hour = 10;
-const uint8_t on_minute = 5;
+const uint8_t on_hour = 0;
+const uint8_t on_minute = 59;
 
 void setup() {
   Serial.begin(115200);
@@ -24,40 +21,45 @@ void setup() {
   initializeWebServer();
   
   CustomLogger::initializeCustomLogger();
-
-  CustomLogger::print(__DATE__);
-  CustomLogger::println(__TIME__);
+  initializeTimeClient();
 }
 
 void loop() {
-  // RtcDateTime datetime = Rtc.GetDateTime();
-  // printDateTime(datetime);
-
   CustomLogger::println("---------");
   CustomLogger::println(on_millis);
   CustomLogger::println(millis());
   CustomLogger::println("---------");
   
-  // if (datetime.Hour() == on_hour && datetime.Minute() == on_minute && !is_on) {
-  //   digitalWrite(RELAY_PIN, HIGH);
+  int hour = timeClient.getHours();
+  int minute = timeClient.getMinutes();
+
+  String formatted = timeClient.getFormattedTime();
+
+  CustomLogger::println(hour);
+  CustomLogger::println(minute);
+  CustomLogger::print(formatted);
+  // CustomLogger::print(minute);
+
+  if (hour == on_hour && minute == on_minute && !is_on) {
+    digitalWrite(RELAY_PIN, HIGH);
     
-  //   on_millis = millis();
-  //   is_on = true;
+    on_millis = millis();
+    is_on = true;
 
-  //   CustomLogger::println(datetime.Hour());
-  //   CustomLogger::println(datetime.Minute());
-  //   CustomLogger::print("Current Flowing for: ");
-  //   CustomLogger::println(on_duration);
+    CustomLogger::println(hour);
+    CustomLogger::println(minute);
+    CustomLogger::print("Current Flowing for: ");
+    CustomLogger::println(on_duration);
 
-  //   postRelayStatus("on");
-  // }
+    postRelayStatus("on");
+  }
 
-  // if (is_on && (millis() - on_millis >= on_duration)) {
-  //   digitalWrite(RELAY_PIN, LOW);
-  //   CustomLogger::println("Current turned off");
-  //   is_on = false;
-  //   postRelayStatus("off");
-  // }
+  if (is_on && (millis() - on_millis >= on_duration)) {
+    digitalWrite(RELAY_PIN, LOW);
+    CustomLogger::println("Current turned off");
+    is_on = false;
+    postRelayStatus("off");
+  }
   
   delay(5000);
 }

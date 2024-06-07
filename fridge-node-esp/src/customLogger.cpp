@@ -1,5 +1,6 @@
 #include "customLogger.h"
 
+boolean initialized = false;
 // void CustomLogger::print(auto data) {
 //   WebSerial.print(data);
 //   CustomLogger::print(data);
@@ -30,5 +31,7 @@ void CustomLogger::parseReceivedMsg(uint8_t *data, size_t len) {
 void CustomLogger::initializeCustomLogger() {
   WebSerial.begin(&server);
   WebSerial.msgCallback(parseReceivedMsg);
+
+  initialized = true;
   CustomLogger::println("DONE INIT");
 }
