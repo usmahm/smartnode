@@ -12,6 +12,12 @@ app.get("/status", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
+app.get("/relay_status", (req, res) => {
+  console.log("Relay id -", req.params)
+  console.log("Relay id --", req.query)
+  res.status(200).json({ state: 1 });
+});
+
 app.post("/relay_status", (req, res) => {
   console.log(req.body);
   console.log("fridge_relay_status: ", req.body["fridge_relay_status"]);

@@ -4,19 +4,19 @@ void postRelayStatusHandler(AsyncWebServerRequest *request) {
   CustomLogger::println("In postRelayStatusHandler");
 
   String status;
+  unsigned long duration = 0; // In minutes
 
   if (request->hasParam("relay_status")) {
     status = request->getParam("relay_status")->value();
   }
 
-  auto state_to_write = (status == "on") ? HIGH : LOW;
+  if (request->hasParam("duration")) {
+    duration = request->getParam("duration")->value().toInt() * 60000;
+  }
 
-  CustomLogger::print("Toggling Relay: ");
-  CustomLogger::print(RELAY_PIN);
-  CustomLogger::print(" -- ");
-  CustomLogger::println(state_to_write);
-  CustomLogger::println("   new.   ");
-  digitalWrite(RELAY_PIN, state_to_write);
+  auto state_to_write = (status == "0") ? HIGH : LOW;
+
+  toggleRelayStatus(state_to_write, duration);
 
   request->send(200, "text/plain", "Success!");
 }

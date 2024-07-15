@@ -1,2 +1,5 @@
 - Planning to use Network time protocol (NTP) to aget time
 - For this to work, any local time zone offset or day light saving time offset is applied by the client because the NTP is UTC
+
+- How to solve issues with ip address - get them on ping request from the esp and keep them updated
+- See how to add authentication, maybe just checking username and password
