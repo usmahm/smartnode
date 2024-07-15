@@ -1,0 +1,2 @@
+- Planning to use Network time protocol (NTP) to aget time
+- For this to work, any local time zone offset or day light saving time offset is applied by the client because the NTP is UTC
