@@ -6,10 +6,10 @@
 #include "timeFunctions.h"
 
 // Relay
-unsigned long on_millis;
+// unsigned long on_millis;
 // unsigned long on_duration = 18000000;
-unsigned long on_duration = 300000;
-bool is_on = false;
+// unsigned long on_duration = 300000;
+// bool is_on = false;
 // const uint8_t on_hour = 12;
 // const uint8_t on_minute = 40;
 

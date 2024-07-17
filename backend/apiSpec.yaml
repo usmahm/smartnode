@@ -1,0 +1,514 @@
+openapi: 3.1.0
+info:
+  title: Home Automation
+  description: |-
+    This is a documentation for the home automation api to be used with the hardware
+  contact:
+    email: ahmadujuwon@gmail.com
+  license:
+    name: GNU GPLv3
+    url: https://choosealicense.com/licenses/gpl-3.0/
+  version: 0.0.1
+tags:
+  - name: Authentication
+    description: Authentication routes
+  - name: User
+    description: User routes
+  - name: Node
+    description: Node routes
+  - name: Group
+    description: Group routes
+paths:   
+  /users/{userId}:
+    get:
+      tags:
+        - User
+      summary: Gets user details by id
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/UserResponse"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/signup:
+    post:
+      tags:
+        - Authentication
+      summary: Creates new user
+      requestBody:
+        content:
+          application/json: 
+            schema:
+              required:
+                - first_name
+                - last_name
+                - password
+              type: object
+              properties:
+                first_name:
+                  $ref: '#/components/schemas/User/properties/first_name'
+                last_name:
+                  $ref: '#/components/schemas/User/properties/last_name'
+                password:
+                  $ref: '#/components/schemas/User/properties/password'
+      responses:
+        '200':
+          description: New user registration successfull
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '422':
+          description: Request body validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidBodyErrorResponse'
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Logs user in
+      requestBody:
+        content:
+          application/json: 
+            schema:
+              required:
+                - email
+                - password
+              type: object
+              properties:
+                email:
+                  $ref: '#/components/schemas/User/properties/email'
+                password:
+                  $ref: '#/components/schemas/User/properties/password'
+      responses:
+        '200':
+          description: User login successfull
+          content:
+            application/json: 
+              schema:
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/UserResponse'
+                      accessToken:
+                        type: string
+
+        '400':
+          description: Login unsuccessful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /nodes:
+    get:
+      tags:
+        - Node
+      summary: Gets all nodes of authenticated user
+      responses:
+        "200":
+          description: Nodes fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/NodeResponse"
+    post:
+      tags:
+        - Node
+      summary: Creates a new node
+      requestBody:
+        content:
+          application/json: 
+            schema:
+              required:
+                - type
+                - name
+                - group_id
+              type: object
+              properties:
+                type:
+                  $ref: '#/components/schemas/Node/properties/type'
+                name:
+                  $ref: '#/components/schemas/Node/properties/name'
+                group_id:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: Node created successfully
+          content:
+            application/json: 
+              schema:
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    properties:
+                      node:
+                        $ref: '#/components/schemas/NodeResponse'
+        '400':
+          description: Node creation unsuccessful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Request body validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidBodyErrorResponse'
+  /nodes/{nodeId}:
+    get:
+      tags:
+        - Node
+      summary: Gets node details by id
+      parameters:
+        - name: nodeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Node fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/NodeResponse"
+        '404':
+          description: Node not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /nodes/{nodeId}/startup-state:
+    get:
+      tags:
+        - Node
+      summary: Gets node startup state, to be called by the node itself
+      parameters:
+        - name: nodeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Node's startup state fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      state:
+                        $ref: '#/components/schemas/Node/properties/state'
+                      state_duration:
+                        $ref: '#/components/schemas/Node/properties/state_duration'
+        '404':
+          description: Node not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /nodes/{nodeId}/state:
+    post:
+      tags:
+        - Node
+      summary: Change node's state
+      parameters:
+        - name: nodeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: state
+          required: true
+          schema:
+              description: New state
+              type: boolean
+        - in: query
+          name: duration
+          schema:
+              description: New state duration
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: Node state updated successfully
+          content:
+            application/json: 
+              schema:
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    properties:
+                      node:
+                        $ref: '#/components/schemas/NodeResponse'
+        '400':
+          description: Node creation unsuccessful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Node not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /groups:
+    get:
+      tags:
+        - Group
+      summary: Gets all groups and nodes of authenticated user
+      responses:
+        "200":
+          description: Groups fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Group"
+  /groups/{groupId}:
+    get:
+      tags:
+        - Group
+      summary: Gets group by id
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Group fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:  
+                    $ref: "#/components/schemas/Group"
+        '404':
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      xml:
+        name: user
+    Node:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+            - switch
+            - fluid_level
+        name:
+          type: string
+        creator:
+          $ref: '#/components/schemas/User'
+        group:
+          $ref: '#/components/schemas/Group'
+        is_online:
+          type: boolean
+        ip_address:
+          type: string
+        state:
+          type: boolean
+        last_state_change:
+          type: string
+          format: date-time
+        state_duration:
+          type: integer
+          format: int64
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        nodes:
+          type: array
+          items:
+              $ref: '#/components/schemas/GroupNodeResponse'
+            
+    
+    InvalidBodyErrorResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          enum: [false]
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+    
+    ErrorResponse:
+      type: object
+      properties:
+          status:
+              type: boolean
+              enum: [false]
+          message:
+              type: string
+    UserResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/User/properties/id'
+        first_name:
+          $ref: '#/components/schemas/User/properties/first_name'
+        last_name:
+          $ref: '#/components/schemas/User/properties/last_name'
+    
+    NodeResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Node/properties/id'
+        name:
+          $ref: '#/components/schemas/Node/properties/name'
+        is_online:
+          $ref: '#/components/schemas/Node/properties/is_online'
+        state:
+          $ref: '#/components/schemas/Node/properties/state'
+        last_state_change:
+          $ref: '#/components/schemas/Node/properties/last_state_change'
+        state_duration:
+          $ref: '#/components/schemas/Node/properties/state_duration'
+        group:
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/Group/properties/id'
+            name:
+              $ref: '#/components/schemas/Group/properties/name'
+
+    NodeStartupStateResponse:
+      type: object
+      properties:
+        state:
+          $ref: '#/components/schemas/Node/properties/state'
+        state_duration:
+          $ref: '#/components/schemas/Node/properties/state_duration'
+        
+    GroupNodeResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Node/properties/id'
+        name:
+          $ref: '#/components/schemas/Node/properties/name'
+        is_online:
+          $ref: '#/components/schemas/Node/properties/is_online'
+        state:
+          $ref: '#/components/schemas/Node/properties/state'
+        last_state_change:
+          $ref: '#/components/schemas/Node/properties/last_state_change'
+        state_duration:
+          $ref: '#/components/schemas/Node/properties/state_duration'
