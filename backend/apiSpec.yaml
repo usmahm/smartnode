@@ -38,7 +38,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
@@ -80,7 +80,7 @@ paths:
             application/json:
               schema:
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
@@ -122,7 +122,7 @@ paths:
             application/json: 
               schema:
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
@@ -153,7 +153,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
@@ -184,13 +184,13 @@ paths:
                   type: string
                   format: uuid
       responses:
-        '200':
+        '201':
           description: Node created successfully
           content:
             application/json: 
               schema:
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
@@ -230,7 +230,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
@@ -262,7 +262,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
@@ -310,12 +310,13 @@ paths:
             application/json: 
               schema:
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
                     type: string
                   data:
+                    type: object
                     properties:
                       node:
                         $ref: '#/components/schemas/NodeResponse'
@@ -344,15 +345,61 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Group"
+                    type: object
+                    properties:
+                      groups:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Group"
+    post:
+      tags:
+        - Group
+      summary: Creates a new group
+      requestBody:
+        content:
+          application/json: 
+            schema:
+              required:
+                - name
+              type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/Group/properties/name'
+      responses:
+        '201':
+          description: Group created successfully
+          content:
+            application/json: 
+              schema:
+                properties:
+                  success:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      group:
+                        $ref: '#/components/schemas/Group'
+        '400':
+          description: Group creation unsuccessful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Request body validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidBodyErrorResponse'
   /groups/{groupId}:
     get:
       tags:
@@ -372,13 +419,16 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
+                  success:
                     type: boolean
                     enum: [true]
                   message:
                     type: string
                   data:  
-                    $ref: "#/components/schemas/Group"
+                    type: object
+                    properties:
+                      group:
+                        $ref: "#/components/schemas/Group"
         '404':
           description: Group not found
           content:
@@ -449,7 +499,7 @@ components:
     InvalidBodyErrorResponse:
       type: object
       properties:
-        status:
+        success:
           type: boolean
           enum: [false]
         message:
@@ -467,7 +517,7 @@ components:
     ErrorResponse:
       type: object
       properties:
-          status:
+          success:
               type: boolean
               enum: [false]
           message:

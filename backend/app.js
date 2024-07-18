@@ -48,7 +48,7 @@ app.use("/groups", groupRoutes);
 
 app.use((req, res) => {
   sendResponse(res, 404, {
-    status: false,
+    success: false,
     message: "Requested route doesn't exist!",
   });
 });
@@ -56,7 +56,7 @@ app.use((req, res) => {
 app.use((error, req, res, next) => {
   const statusCode = error.statusCode || 500;
   const body = error.body || {
-    status: false,
+    success: false,
     message: "An internal error occured",
   };
   console.log(

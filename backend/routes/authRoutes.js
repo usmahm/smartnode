@@ -26,13 +26,13 @@ router.post(
       .isLength({ min: 3 })
       .withMessage("Password should be a minimum length of 3"),
   ],
-  authController.signup
+  authController.signupHandler
 );
 
 router.post(
   "/login",
   [body("email").trim().notEmpty(), body("password").trim().notEmpty()],
-  authController.login
+  authController.loginHandler
 );
 
 module.exports = router;

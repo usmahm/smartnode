@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createUser, findUserByEmail } = require("../models/userModel");
-const customValidationResults = require("../utils/customValidationResults");
+const { checkIfValidationError } = require("../utils/customValidationResults");
 const sendResponse = require("../utils/sendResponse");
 
 const generateAuthToken = (id, email) => {
@@ -15,27 +15,16 @@ const generateAuthToken = (id, email) => {
   );
 };
 
-const signup = async (req, res, next) => {
+const signupHandler = async (req, res, next) => {
   try {
-    const errors = customValidationResults(req);
-    if (!errors.isEmpty()) {
-      const error = new Error();
-      error.statusCode = 422;
-      error.body = {
-        status: false,
-        message: "Invalid data provided",
-        errors: errors.array(),
-      };
-      throw error;
-    }
+    checkIfValidationError(req);
 
     const { first_name, last_name, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 12);
 
     let createdUser = await createUser({
       first_name: first_name,
       last_name: last_name,
-      password: hashedPassword,
+      password: password,
       email: email,
     });
 
@@ -49,30 +38,19 @@ const signup = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
 
-const login = async (req, res, next) => {
+const loginHandler = async (req, res, next) => {
   try {
-    const errors = customValidationResults(req);
-    if (!errors.isEmpty()) {
-      const error = new Error();
-      error.statusCode = 422;
-      error.body = {
-        status: false,
-        message: "Invalid data provided",
-        errors: errors.array(),
-      };
-      throw error;
-    }
+    checkIfValidationError(req);
 
     let user = await findUserByEmail(req.body.email);
 
     if (!user) {
       sendResponse(res, 401, {
-        status: false,
+        success: false,
         message: "Wrong email or password!",
         statusCode: 401,
       });
@@ -83,7 +61,7 @@ const login = async (req, res, next) => {
         const token = generateAuthToken(user.id, user.email);
 
         sendResponse(res, 200, {
-          status: true,
+          success: true,
           message: "Login successful",
           data: {
             access_token: token,
@@ -97,18 +75,17 @@ const login = async (req, res, next) => {
         });
       } else {
         sendResponse(res, 401, {
-          status: false,
+          success: false,
           message: "Wrong email or password!",
         });
       }
     }
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
 
 module.exports = {
-  signup,
-  login,
+  signupHandler,
+  loginHandler,
 };

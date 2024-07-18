@@ -7,4 +7,21 @@ const customValidationResults = validationResult.withDefaults({
   }),
 });
 
-module.exports = customValidationResults;
+const checkIfValidationError = (req) => {
+  const errors = customValidationResults(req);
+  if (!errors.isEmpty()) {
+    const error = new Error();
+    error.statusCode = 422;
+    error.body = {
+      success: false,
+      message: "Invalid data provided",
+      errors: errors.array(),
+    };
+    throw error;
+  }
+};
+
+module.exports = {
+  // customValidationResults,
+  checkIfValidationError,
+};
