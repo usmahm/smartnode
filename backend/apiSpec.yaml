@@ -77,9 +77,20 @@ paths:
         '200':
           description: New user registration successfull
           content:
-            application/json: 
+            application/json:
               schema:
-                $ref: '#/components/schemas/UserResponse'
+                properties:
+                  status:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/UserResponse'
+                      access_token:
+                        type: string
         '422':
           description: Request body validation failed
           content:
@@ -120,7 +131,7 @@ paths:
                     properties:
                       user:
                         $ref: '#/components/schemas/UserResponse'
-                      accessToken:
+                      access_token:
                         type: string
 
         '400':
@@ -446,7 +457,12 @@ components:
         errors:
           type: array
           items:
-            type: string
+            type: object
+            properties:
+              message:
+                type: string
+              field:
+                type: string
     
     ErrorResponse:
       type: object
