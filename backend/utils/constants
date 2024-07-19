@@ -1,0 +1,3 @@
+const NodeTypes = ["fluid_level", "switch"];
+
+module.exports = NodeTypes;

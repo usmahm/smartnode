@@ -11,5 +11,6 @@
     "ranges": "cpp",
     "regex": "cpp",
     "random": "cpp"
-  }
+  },
+  "idf.port": "/dev/tty.wlan-debug"
 }

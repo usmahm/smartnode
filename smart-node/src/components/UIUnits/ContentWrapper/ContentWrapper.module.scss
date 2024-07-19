@@ -1,0 +1,9 @@
+@import "../../../shared/styles/shared.module.scss";
+@import "../../../shared/styles/variables.modules.scss";
+
+.wrapper {
+  width: 100%;
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid $primary-color;
+}

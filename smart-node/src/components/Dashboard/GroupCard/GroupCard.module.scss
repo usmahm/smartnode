@@ -1,0 +1,52 @@
+@import "../../../shared/styles/shared.module.scss";
+@import "../../../shared/styles/variables.modules.scss";
+
+.group {
+  margin-bottom: 20px;
+  width: 100%;
+
+  .groupBtn {
+    @include HSpaceBetweenFlex;
+    padding: 0 20px;
+    border-radius: 5px;
+    border: 1px solid $primary-color;
+    width: 100%;
+    height: pxToRem(40);
+
+    .left {
+      @include HSpaceBetweenFlex;
+
+      p {
+        @include font(pxToRem(14), 600, $primary-color);
+        margin-left: 10px;
+      }
+    }
+
+    .right {
+      &.isOpen {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .node {
+    @include HSpaceBetweenFlex;
+    height: pxToRem(40);
+    width: 100%;
+    border-radius: 5px;
+    padding: 0 20px;
+
+    &:hover {
+      background-color: $blue-0;
+    }
+
+    .left {
+      @include HSpaceBetweenFlex;
+
+      p {
+        @include font(pxToRem(12), 500, $primary-color);
+        margin-left: 10px;
+      }
+    }
+  }
+}

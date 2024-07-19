@@ -1,0 +1,15 @@
+@import "../../../shared/styles/shared.module.scss";
+@import "../../../shared/styles/variables.modules.scss";
+
+.main {
+  position: relative;
+
+  .content {
+    margin: 0 auto;
+    max-width: pxToRem(1140);
+  }
+
+  .headerBlock {
+    height: pxToRem(58);
+  }
+}

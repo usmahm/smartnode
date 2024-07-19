@@ -1,0 +1,16 @@
+@import "../../../../shared/styles/shared.module.scss";
+@import "../../../../shared/styles/variables.modules.scss";
+
+.hTitle {
+  @include font(pxToRem(36), 700, $primary-color);
+  margin-top: 40px;
+
+  @include mobile-only {
+    margin-top: 5px;
+  }
+}
+
+.hSubTitle {
+  @include font(pxToRem(12), 500, $primary-color);
+  margin-bottom: 40px;
+}

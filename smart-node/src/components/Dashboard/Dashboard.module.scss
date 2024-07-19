@@ -1,0 +1,25 @@
+@import "../../shared/styles/shared.module.scss";
+@import "../../shared/styles/variables.modules.scss";
+
+.noContent {
+  max-width: pxToRem(346);
+  margin: 0 auto;
+  margin-top: 70px;
+  text-align: center;
+
+  h3 {
+    @include font(pxToRem(14), 700, $primary-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    @include font(pxToRem(12), 500, $primary-color);
+    margin-bottom: 60px;
+  }
+}
+
+.groups {
+  @include font(pxToRem(14), 700, $primary-color);
+  margin-bottom: 40px;
+}
