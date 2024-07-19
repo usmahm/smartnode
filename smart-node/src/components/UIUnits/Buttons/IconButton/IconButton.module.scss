@@ -1,0 +1,12 @@
+@import "../../../../shared/styles/shared.module.scss";
+@import "../../../../shared/styles/variables.modules.scss";
+
+.button {
+  border-radius: 5px;
+  height: pxToRem(40);
+  width: pxToRem(40);
+  @include CenterItemFlex;
+  background-color: $blue-0;
+  // bad
+  // margin-left: 20px;
+}

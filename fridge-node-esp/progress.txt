@@ -5,3 +5,10 @@
 - See how to add authentication, maybe just checking username and password
 
 - use concept of oop to make the current code support other type of switches like pumping machine
+
+
+ips
+ socket 172.20.10.3
+ 2222 172.20.10.2
+
+ 444 - Conncected to usb 172.20.10.4

@@ -1,7 +1,7 @@
 #pragma once
 
-#define WIFISSID "raspit"
-#define WIFI_PASSWORD "raspit1ras"
+// #define WIFISSID "raspit"
+// #define WIFI_PASSWORD "raspit1ras"
 
 // #define RELAY_PIN D5
 #define RELAY_PIN 0 
@@ -14,4 +14,7 @@
 // #define WIFISSID "STARLINK"
 // #define WIFI_PASSWORD ""
 
-#define RELAY_ID 10
+#define WIFISSID "usmahm"
+#define WIFI_PASSWORD "defcon-qqw"
+
+#define RELAY_ID 324

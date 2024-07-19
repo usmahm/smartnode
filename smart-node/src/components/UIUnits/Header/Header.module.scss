@@ -1,0 +1,35 @@
+@import "../../../shared/styles/shared.module.scss";
+@import "../../../shared/styles/variables.modules.scss";
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: pxToRem(58);
+  width: 100%;
+  border-bottom: 1px solid $primary-color;
+  background-color: $white;
+  padding: 0 20px;
+
+  @include HSpaceBetweenFlex;
+
+  .aside {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .profileIcon {
+      margin-left: 40px;
+      width: pxToRem(40);
+      height: pxToRem(40);
+      border-radius: 1000000px;
+      background-color: $primary-color;
+      @include CenterItemFlex;
+    }
+  }
+
+  &__auth {
+    justify-content: center;
+    background-color: $primary-color;
+  }
+}
