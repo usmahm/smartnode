@@ -4,14 +4,20 @@ import styles from "./SubHeader.module.scss";
 type Props = {
   title: string;
   subTitle: string;
+  rightComponent?: JSX.Element;
 };
 
-const SubHeader: React.FC<Props> = ({ title, subTitle }) => {
+const SubHeader: React.FC<Props> = ({ title, subTitle, rightComponent }) => {
   return (
-    <>
-      <h1 className={styles.hTitle}>{title}</h1>
-      <p className={styles.hSubTitle}>{subTitle}</p>
-    </>
+    <div className={styles.subHeader}>
+      <div>
+        <h1 className={styles.hTitle}>{title}</h1>
+        <p className={styles.hSubTitle}>{subTitle}</p>
+      </div>
+      {rightComponent && (
+        <div className={styles.rightComp}>{rightComponent}</div>
+      )}
+    </div>
   );
 };
 

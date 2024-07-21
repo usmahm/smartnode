@@ -20,6 +20,7 @@ router.post(
         if (!group) {
           throw new Error("Group doesn't exist");
         } else {
+          console.log("HEYY", req.user);
           console.log(group, req.user.id, group.user_id);
           if (req.user.id !== group.user_id) {
             throw new Error("User not owner of group");

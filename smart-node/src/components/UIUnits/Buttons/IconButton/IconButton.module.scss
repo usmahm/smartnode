@@ -2,11 +2,16 @@
 @import "../../../../shared/styles/variables.modules.scss";
 
 .button {
-  border-radius: 5px;
-  height: pxToRem(40);
-  width: pxToRem(40);
-  @include CenterItemFlex;
-  background-color: $blue-0;
-  // bad
-  // margin-left: 20px;
+  display: flex;
+  align-items: center;
+  @include font(pxToRem(12), 700, $primary-color);
+
+  .icon {
+    height: pxToRem(40);
+    width: pxToRem(40);
+    @include CenterItemFlex;
+    background-color: $blue-0;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
 }

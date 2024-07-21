@@ -23,7 +23,7 @@ const GroupCard: React.FC<Props> = ({ name, nodes }) => {
         className={styles.groupBtn}
       >
         <span className={styles.left}>
-          <GroupIcon />
+          <GroupIcon width={24} />
           <p>{name}</p>
         </span>
 
@@ -33,7 +33,7 @@ const GroupCard: React.FC<Props> = ({ name, nodes }) => {
             [styles.isOpen]: showNodes,
           })}
         >
-          <ArrowDownIcon />
+          <ArrowDownIcon width={24} />
         </span>
       </button>
       {showNodes &&
@@ -44,12 +44,12 @@ const GroupCard: React.FC<Props> = ({ name, nodes }) => {
             className={styles.node}
           >
             <span className={styles.left}>
-              <NodeIcon />
+              <NodeIcon width={18} />
               <p>{node}</p>
             </span>
 
             <button className={styles.right}>
-              <NodeStateIcon />
+              <NodeStateIcon width={18} />
             </button>
           </button>
         ))}

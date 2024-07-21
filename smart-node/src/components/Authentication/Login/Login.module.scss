@@ -1,0 +1,25 @@
+@import "../../../shared/styles/shared.module.scss";
+@import "../../../shared/styles/variables.modules.scss";
+
+.wrapper {
+  @include container;
+  max-width: pxToRem(400);
+  margin: 0 auto;
+  margin-bottom: 40px;
+  margin-top: 40px;
+
+  .btn {
+    margin-top: 40px;
+  }
+
+  .footer {
+    text-align: center;
+    @include font(pxToRem(12), 500, $primary-color);
+    margin-top: 5px;
+
+    .link {
+      font-weight: 700;
+      text-decoration: underline;
+    }
+  }
+}
