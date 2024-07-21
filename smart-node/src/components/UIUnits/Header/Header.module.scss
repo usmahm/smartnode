@@ -17,6 +17,10 @@
     display: flex;
     align-items: center;
     gap: 20px;
+  }
+
+  .profileIconWrapper {
+    position: relative;
 
     .profileIcon {
       margin-left: 40px;
@@ -25,6 +29,40 @@
       border-radius: 1000000px;
       background-color: $primary-color;
       @include CenterItemFlex;
+      position: relative;
+    }
+
+    .options {
+      position: absolute;
+      top: pxToRem(43);
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      border: 2px solid $primary-color;
+      border-radius: 8px 0 8px 8px;
+      overflow: hidden;
+      background-color: $white;
+
+      button {
+        padding: 0 15px;
+        height: pxToRem(48);
+
+        &:not(:last-of-type) {
+          border-bottom: 2px solid $primary-color;
+        }
+
+        &:hover {
+          background-color: $blue-0;
+        }
+      }
+    }
+  }
+
+  .unauth {
+    svg {
+      path {
+        fill: $white;
+      }
     }
   }
 

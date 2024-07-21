@@ -34,10 +34,8 @@ const createGroupHandler = async (req, res, next) => {
 
 const getAllUserGroupsHandler = async (req, res, next) => {
   try {
-    console.log("HEYY", req.params);
     const groups = await getAllUserGroups(req.user.id);
 
-    console.log("groups", groups);
     sendResponse(res, 200, {
       success: true,
       message: "Group fetched successfully",

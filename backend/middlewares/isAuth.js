@@ -15,6 +15,10 @@ const isAuth = (req, res, next) => {
       throw new Error();
     }
 
+    if (!decoded.id || !decoded.email) {
+      throw new Error();
+    }
+
     req.user = { id: decoded.id, email: decoded.email };
   } catch (err) {
     const error = new Error();

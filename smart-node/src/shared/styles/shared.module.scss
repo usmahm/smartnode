@@ -4,6 +4,13 @@
   @return ($pxValue / 16) * 1rem;
 }
 
+@mixin container {
+  width: 100%;
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid $primary-color;
+}
+
 @mixin font($fontSize, $fontWeight, $fontColor) {
   font-size: $fontSize;
   font-weight: $fontWeight;

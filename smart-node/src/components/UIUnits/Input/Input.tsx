@@ -7,28 +7,18 @@ type OptionType = {
   val: string;
 };
 
-export type ChangeHandlerType =
-  | {
-      type: "NORMAL";
-      event: React.ChangeEvent<HTMLInputElement>;
-    }
-  | {
-      type: "DROPDOWN";
-      event: OptionType;
-    };
-
 type Props = {
   title: string;
-  type: "NORMAL" | "DROPDOWN";
+  type?: "NORMAL" | "DROPDOWN";
   value: string;
   options?: OptionType[];
   placeholder: string;
-  onChange: (e: ChangeHandlerType) => {};
+  onChange: (val: string) => void;
 };
 
 const Input: React.FC<Props> = ({
   title,
-  type,
+  type = "NORMAL",
   value,
   onChange,
   options,
@@ -45,12 +35,7 @@ const Input: React.FC<Props> = ({
             <input
               type="text"
               id={title}
-              onChange={(e) =>
-                onChange({
-                  type: "NORMAL",
-                  event: e,
-                })
-              }
+              onChange={(e) => onChange(e.target.value)}
               value={value}
               name={title}
               placeholder={placeholder}
@@ -62,16 +47,17 @@ const Input: React.FC<Props> = ({
         if (options) {
           inputEl = (
             <div className={styles.dropDown}>
+              <label htmlFor={title}>{title}</label>
               <button
-                onClick={() => setOpenDropDown(true)}
+                onClick={() => setOpenDropDown((prev) => !prev)}
                 className={`${styles.dropDownBtn} ${
                   openDropDown && styles.isOpen
                 }`}
               >
-                {value}
+                {value || placeholder}
 
                 <span>
-                  <OpenIcon />
+                  <OpenIcon width={24} />
                 </span>
               </button>
 
@@ -80,12 +66,10 @@ const Input: React.FC<Props> = ({
                   {options.map((option) => (
                     <button
                       key={option.id}
-                      onChange={(e) =>
-                        onChange({
-                          type: "DROPDOWN",
-                          event: option,
-                        })
-                      }
+                      onClick={(e) => {
+                        onChange(option.id);
+                        setOpenDropDown(false);
+                      }}
                     >
                       {option.val}
                     </button>
