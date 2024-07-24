@@ -6,10 +6,11 @@ import ArrowDownIcon from "@/assets/icons/arrowDownIcon.svg";
 import NodeStateIcon from "@/assets/icons/nodeStateIcon.svg";
 import styles from "./GroupCard.module.scss";
 import clsx from "clsx";
+import { NodeType } from "@/@types/nodeTypes";
 
 type Props = {
   name: string;
-  nodes: string[];
+  nodes: NodeType[];
 };
 
 const GroupCard: React.FC<Props> = ({ name, nodes }) => {
@@ -39,13 +40,13 @@ const GroupCard: React.FC<Props> = ({ name, nodes }) => {
       {showNodes &&
         nodes.map((node) => (
           <button
-            key={node}
-            onClick={() => router.push(`/node/${node}`)}
+            key={node.id}
+            onClick={() => router.push(`/node/${node.id}`)}
             className={styles.node}
           >
             <span className={styles.left}>
               <NodeIcon width={18} />
-              <p>{node}</p>
+              <p>{node.name}</p>
             </span>
 
             <button className={styles.right}>

@@ -4,7 +4,7 @@ import styles from "./Input.module.scss";
 
 type OptionType = {
   id: string;
-  val: string;
+  name: string;
 };
 
 type Props = {
@@ -63,17 +63,25 @@ const Input: React.FC<Props> = ({
 
               {openDropDown && (
                 <div className={styles.options}>
-                  {options.map((option) => (
-                    <button
-                      key={option.id}
-                      onClick={(e) => {
-                        onChange(option.id);
-                        setOpenDropDown(false);
-                      }}
-                    >
-                      {option.val}
+                  {options.length ? (
+                    <>
+                      {options.map((option) => (
+                        <button
+                          key={option.id}
+                          onClick={(e) => {
+                            onChange(option.id);
+                            setOpenDropDown(false);
+                          }}
+                        >
+                          {option.name}
+                        </button>
+                      ))}
+                    </>
+                  ) : (
+                    <button key={"option.id"} onClick={() => {}} disabled>
+                      No Group
                     </button>
-                  ))}
+                  )}
                 </div>
               )}
             </div>

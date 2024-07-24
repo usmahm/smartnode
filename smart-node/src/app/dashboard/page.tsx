@@ -1,13 +1,11 @@
-import Dashboard from "@/components/Dashboard/Dashboard";
-import Layout from "@/components/UIUnits/Layout/Layout";
+"use client";
+
 import React from "react";
+import withAuth from "@/shared/hocs/withAuth";
+import Dashboard from "@/components/Dashboard/Dashboard";
 
 const DashboardPage = () => {
-  return (
-    <Layout headerType="AUTH">
-      <Dashboard />
-    </Layout>
-  );
+  return <Dashboard />;
 };
 
-export default DashboardPage;
+export default withAuth(DashboardPage);

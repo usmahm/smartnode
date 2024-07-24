@@ -1,0 +1,25 @@
+@import "../../../shared/styles/shared.module.scss";
+@import "../../../shared/styles/variables.modules.scss";
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  border: 4px solid $blue-0;
+  border-top: 4px solid $primary-color;
+  border-radius: 50%;
+  width: pxToRem(30);
+  height: pxToRem(30);
+  animation: spin 2s linear infinite;
+
+  &.sizeExtern {
+    width: 100%;
+    height: 100%;
+  }
+}

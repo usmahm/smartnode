@@ -1,10 +1,14 @@
 @import "../../shared/styles/shared.module.scss";
 @import "../../shared/styles/variables.modules.scss";
 
-.noContent {
+.noContent,
+.loading {
   max-width: pxToRem(346);
   margin: 0 auto;
   margin-top: 70px;
+}
+
+.noContent {
   text-align: center;
 
   h3 {
@@ -17,6 +21,10 @@
     @include font(pxToRem(12), 500, $primary-color);
     margin-bottom: 60px;
   }
+}
+
+.loading {
+  @include CenterItemFlex;
 }
 
 .groups {

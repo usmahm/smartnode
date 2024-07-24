@@ -11,6 +11,7 @@ import UserIcon from "@/assets/icons/userIcon.svg";
 import styles from "./Header.module.scss";
 import IconButton from "../Buttons/IconButton/IconButton";
 import Link from "next/link";
+import { useUserContext } from "@/contexts/UserContext";
 
 export type HeaderTypes = "UNAUTH" | "AUTH";
 
@@ -23,10 +24,11 @@ const Header: React.FC<Props> = ({ type }) => {
   const [openOptions, setOpenOptions] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { logoutHandler } = useUserContext();
   // const headerBtnClickHandler = (btnId: BtnId) => {};
 
-  const logoutHandler = () => {
-    console.log("HEYYY CLLL");
+  const logout = () => {
+    logoutHandler();
     setOpenOptions(false);
   };
 
@@ -59,11 +61,18 @@ const Header: React.FC<Props> = ({ type }) => {
                 icon={<HomeIcon height={24} />}
                 onClick={() => headerBtnClickHandler("SEARCH")}
               /> */}
-              {pathname !== "/node/new" && (
+              {pathname !== "/node/activate" && (
                 <IconButton
                   icon={<CreateIcon height={24} />}
-                  onClick={() => router.push(`/node/new`)}
+                  onClick={() => router.push(`/node/activate`)}
                   label="Add Node"
+                />
+              )}
+              {pathname === "/admin" && (
+                <IconButton
+                  icon={<CreateIcon height={24} />}
+                  onClick={() => router.push(`/node/create`)}
+                  label="Create Node"
                 />
               )}
               <div className={styles.profileIconWrapper}>
@@ -75,7 +84,7 @@ const Header: React.FC<Props> = ({ type }) => {
                 </button>
                 {openOptions && (
                   <div className={styles.options}>
-                    <button onClick={() => logoutHandler()}>Logout</button>
+                    <button onClick={() => logout()}>Logout</button>
                   </div>
                 )}
               </div>

@@ -1,7 +1,8 @@
 require("dotenv").config();
+const cors = require("cors");
 const express = require("express");
-var morgan = require("morgan");
-var ip = require("ip");
+const morgan = require("morgan");
+const ip = require("ip");
 const swaggerUI = require("swagger-ui-express");
 const fs = require("fs");
 const YAML = require("yaml");
@@ -18,6 +19,9 @@ const file = fs.readFileSync("./apiSpec.yaml", "utf8");
 const swaggerDocument = YAML.parse(file);
 
 const app = express();
+
+// Adjust this to only allow some routes
+app.use(cors());
 
 app.use(morgan("tiny"));
 app.use(express.json());

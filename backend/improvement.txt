@@ -1,1 +1,30 @@
 edit endpoints for appropriate endpoints
+
+- node/activate endpoint
+  Prevent double activation of nodes (i.e adding multiple times)
+- Admin routes Protected with isAdmin middleware
+- get nodes/admin?user_id=id endpoint to get all nodes of a user - admin
+- get users
+- node to create new node on production
+-
+
+- Update signup docmentation - body and response
+
+Future
+- different user types - hardcode for now
+  normal
+  admin
+- Implement pagination for required routes
+
+
+Connecting to outside network
+- Firebase Web App with the ESP32
+- Ngrok - https://ngrok.com/blog-post/putting-the-esp32-microcontroller-on-the-internet - needs raspberry - 
+https://rntlab.com/question/unit1-esp32-wi-fi-multisensor-unit-7-accessing-the-esp32-web-server-from-anywhere-3/
+
+- Explore - Reverse SSH Tunneling
+
+Limitation: max port numbers - 65,535
+
+- MQQT
+https://randomnerdtutorials.com/cloud-mqtt-mosquitto-broker-access-anywhere-digital-ocean/

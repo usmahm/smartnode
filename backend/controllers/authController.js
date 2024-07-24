@@ -31,11 +31,16 @@ const signupHandler = async (req, res, next) => {
 
     const token = generateAuthToken(createUser.id, createUser.email);
     sendResponse(res, 201, {
-      access_token: token,
-      user: {
-        id: createdUser.id,
-        first_name: createdUser.first_name,
-        last_name: createdUser.last_name,
+      success: true,
+      message: "Signup successful",
+      data: {
+        access_token: token,
+        user: {
+          id: createdUser.id,
+          first_name: createdUser.first_name,
+          last_name: createdUser.last_name,
+          email: createdUser.email,
+        },
       },
     });
   } catch (err) {

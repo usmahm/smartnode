@@ -1,13 +1,11 @@
+"use client";
+
 import React from "react";
 import Node from "@/components/Node/Node";
-import Layout from "@/components/UIUnits/Layout/Layout";
+import withAuth from "@/shared/hocs/withAuth";
 
 const NodePage = () => {
-  return (
-    <Layout headerType="AUTH">
-      <Node />
-    </Layout>
-  );
+  return <Node />;
 };
 
-export default NodePage;
+export default withAuth(NodePage);
