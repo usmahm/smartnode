@@ -80,9 +80,16 @@ const findUserByEmail = async (email, attributes_to_include) => {
   });
 };
 
+const getAllUsers = async (attributes_to_include) => {
+  return User.findAll({
+    attributes: attributes_to_include,
+  });
+};
+
 module.exports = {
   User,
   createUser,
   findUserById,
   findUserByEmail,
+  getAllUsers,
 };

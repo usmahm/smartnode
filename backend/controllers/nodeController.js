@@ -1,27 +1,53 @@
-const { createNode } = require("../models/nodeModel");
+const { createNode, getNodeById } = require("../models/nodeModel");
 const { checkIfValidationError } = require("../utils/customValidationResults");
 const sendResponse = require("../utils/sendResponse");
 
-const createNodeHandler = async (req, res, next) => {
+const activateNodeHandler = async (req, res, next) => {
   try {
     checkIfValidationError(req);
 
-    const { name, type, group_id } = req.body;
+    const { name, group_id } = req.body;
+    const node_id = req.params.node_id;
 
-    let createdNode = await createNode({
-      name: name,
+    const node = await getNodeById(node_id);
+    console.log(node);
+
+    if (!node) {
+      const error = new Error();
+      error.statusCode = 404;
+      error.body = {
+        success: false,
+        message: "Node doen't exist",
+      };
+
+      throw error;
+    } else if (node.user_id) {
+      const error = new Error();
+      error.statusCode = 400;
+      error.body = {
+        success: false,
+        message: "Node already activated",
+      };
+
+      throw error;
+    }
+
+    node.set({
+      name,
+      group_id,
       user_id: req.user.id,
-      type: type,
-      group_id: group_id,
+      last_state_change: new Date(),
     });
 
-    console.log(createdNode);
+    await node.save();
+
+    console.log("node", node);
 
     sendResponse(res, 201, {
       success: true,
-      message: "Node created successfully",
+      message: "Node activated successfully",
       data: {
-        node: createdNode,
+        node,
       },
     });
   } catch (err) {
@@ -31,5 +57,5 @@ const createNodeHandler = async (req, res, next) => {
 };
 
 module.exports = {
-  createNodeHandler,
+  activateNodeHandler,
 };

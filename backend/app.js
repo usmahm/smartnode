@@ -10,10 +10,12 @@ const bodyParser = require("body-parser");
 
 const sequelize = require("./config/dbConnection");
 const sendResponse = require("./utils/sendResponse");
+
 const authRoutes = require("./routes/authRoutes");
 const nodeRoutes = require("./routes/nodeRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const file = fs.readFileSync("./apiSpec.yaml", "utf8");
 const swaggerDocument = YAML.parse(file);
@@ -36,6 +38,7 @@ app.use("/auth", authRoutes);
 app.use("/nodes", nodeRoutes);
 app.use("/users", userRoutes);
 app.use("/groups", groupRoutes);
+app.use("/admin", adminRoutes);
 
 // app.get("/relay_status", (req, res) => {
 //   console.log("Relay id -", req.params);

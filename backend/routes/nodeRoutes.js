@@ -8,10 +8,9 @@ const isAuth = require("../middlewares/isAuth");
 const router = express.Router();
 
 router.post(
-  "/",
+  "/:node_id/activate",
   isAuth,
   [
-    body("type").isIn(NodeTypes),
     body("group_id")
       .trim()
       .notEmpty()
@@ -29,7 +28,7 @@ router.post(
       }),
     body("name").trim().notEmpty(),
   ],
-  nodeController.createNodeHandler
+  nodeController.activateNodeHandler
 );
 
 module.exports = router;

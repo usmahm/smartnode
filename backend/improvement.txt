@@ -15,6 +15,7 @@ Future
   normal
   admin
 - Implement pagination for required routes
+- Delete node and group routes
 
 
 Connecting to outside network
@@ -28,3 +29,5 @@ Limitation: max port numbers - 65,535
 
 - MQQT
 https://randomnerdtutorials.com/cloud-mqtt-mosquitto-broker-access-anywhere-digital-ocean/
+
+- Learn about Node-required

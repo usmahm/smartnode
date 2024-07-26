@@ -18,6 +18,8 @@ tags:
     description: Node routes
   - name: Group
     description: Group routes
+  - name: Admin
+    description: Admin routes
 paths:   
   /users/{userId}:
     get:
@@ -44,7 +46,9 @@ paths:
                   message:
                     type: string
                   data:
-                    $ref: "#/components/schemas/UserResponse"
+                    properties:
+                        user:
+                          $ref: "#/components/schemas/UserResponse"
         '404':
           description: User not found
           content:
@@ -134,7 +138,7 @@ paths:
                       access_token:
                         type: string
 
-        '400':
+        '401':
           description: Login unsuccessful
           content:
             application/json:
@@ -159,33 +163,33 @@ paths:
                   message:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/NodeResponse"
+                    properties:
+                      nodes:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/NodeResponse"
+  /nodes/activate:
     post:
       tags:
         - Node
-      summary: Creates a new node
+      summary: Activates node for user
       requestBody:
         content:
           application/json: 
             schema:
               required:
-                - type
-                - name
+                - node_id
                 - group_id
               type: object
               properties:
-                type:
-                  $ref: '#/components/schemas/Node/properties/type'
-                name:
-                  $ref: '#/components/schemas/Node/properties/name'
+                node_id:
+                  $ref: '#/components/schemas/Node/properties/id'
                 group_id:
                   type: string
                   format: uuid
       responses:
         '201':
-          description: Node created successfully
+          description: Node activated successfully
           content:
             application/json: 
               schema:
@@ -199,18 +203,24 @@ paths:
                     properties:
                       node:
                         $ref: '#/components/schemas/NodeResponse'
-        '400':
-          description: Node creation unsuccessful
+        '404':
+          description: Node doesn't exist or Group not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        '422':
-          description: Request body validation failed
+        '401':
+          description: Group not owned by user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InvalidBodyErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Node already activated 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /nodes/{nodeId}:
     get:
       tags:
@@ -236,7 +246,9 @@ paths:
                   message:
                     type: string
                   data:
-                    $ref: "#/components/schemas/NodeResponse"
+                    properties:
+                        node:
+                          $ref: "#/components/schemas/NodeResponse"
         '404':
           description: Node not found
           content:
@@ -268,12 +280,14 @@ paths:
                   message:
                     type: string
                   data:
-                    type: object
                     properties:
-                      state:
-                        $ref: '#/components/schemas/Node/properties/state'
-                      state_duration:
-                        $ref: '#/components/schemas/Node/properties/state_duration'
+                      node:
+                        type: object
+                        properties:
+                          state:
+                            $ref: '#/components/schemas/Node/properties/state'
+                          state_duration:
+                            $ref: '#/components/schemas/Node/properties/state_duration'
         '404':
           description: Node not found
           content:
@@ -431,6 +445,148 @@ paths:
                         $ref: "#/components/schemas/Group"
         '404':
           description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/nodes:
+      get:
+        tags:
+          - Admin
+        summary: Get all User's nodes
+        parameters:
+          - in: query
+            name: user_id
+            # required: true
+            schema:
+                description: User id to fetch nodes for
+                type: string
+          - in: query
+            name: not_activated
+            # required: true
+            schema:
+                description: Fetch nodes that haven't been activated
+                type: boolean
+        responses:
+          '200':
+            description: Nodes fetched successfully
+            content:
+              application/json: 
+                schema:
+                  properties:
+                    success:
+                      type: boolean
+                      enum: [true]
+                    message:
+                      type: string
+                    data:
+                      properties:
+                        nodes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                $ref: "#/components/schemas/Node/properties/id"
+                              name:
+                                $ref: "#/components/schemas/Node/properties/name"
+          '403':
+            description: User not admin
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+      post:
+        tags:
+          - Admin
+        summary: Create a new node
+        requestBody:
+          content:
+            application/json: 
+              schema:
+                required:
+                  - type
+                type: object
+                properties:
+                  type:
+                    $ref: '#/components/schemas/Node/properties/type'
+        responses:
+            '201':
+              description: Node created successfully
+              content:
+                application/json: 
+                  schema:
+                    properties:
+                      success:
+                        type: boolean
+                        enum: [true]
+                      message:
+                        type: string
+                      data:
+                        properties:
+                          node:
+                            type: object
+                            properties:
+                              id:
+                                $ref: "#/components/schemas/Node/properties/id"
+                              type:
+                                $ref: '#/components/schemas/Node/properties/type'
+            '400':
+              description: Node creation unsuccessful
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+            '422':
+              description: Request body validation failed
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/InvalidBodyErrorResponse'
+            '403':
+              description: User not admin
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+  /admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Get all users
+      responses:
+        '200':
+          description: Users fetched successfully
+          content:
+            application/json: 
+              schema:
+                properties:
+                  success:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              $ref: "#/components/schemas/User/properties/id"
+                            first_name:
+                              $ref: "#/components/schemas/User/properties/first_name"
+                            last_name:
+                              $ref: "#/components/schemas/User/properties/last_name"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: User not admin
           content:
             application/json:
               schema:

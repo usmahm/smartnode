@@ -12,7 +12,7 @@ const Node = sequelize.define(
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      // allowNull: false,
     },
     ip_address: {
       type: DataTypes.STRING,
@@ -31,7 +31,7 @@ const Node = sequelize.define(
     last_state_change: {
       type: DataTypes.DATE,
       // allowNull: false,
-      default: DataTypes.NOW,
+      // default: DataTypes.NOW,
     },
     state_duration: {
       type: DataTypes.BIGINT,
@@ -43,29 +43,62 @@ const Node = sequelize.define(
         if (node.state === undefined) {
           node.state = false;
         }
-        if (!node.last_state_change) {
-          node.last_state_change = new Date();
-        }
+        // if (!node.last_state_change) {
+        //   node.last_state_change = new Date();
+        // }
       },
     },
   }
 );
 
-const createNode = async ({ name, user_id, type, group_id }) => {
+const createNode = async ({ type }) => {
   return Node.create({
-    name: name,
     type: type,
-    user_id: user_id,
-    group_id: group_id,
   });
 };
 
+// const activateNode = async ({ name, user_id, type, group_id }) => {
+//   return Node.create({
+//     name: name,
+//     type: type,
+//     user_id: user_id,
+//     group_id: group_id,
+//   });
+// };
+
 const getNodeById = async (node_id) => {
   return Node.findByPk(node_id);
+};
+
+const getAllNodes = async (attributes_to_include) => {
+  return Node.findAll({
+    attributes: attributes_to_include,
+  });
+};
+
+const getAllNodesByUser = async (user_id, attributes_to_include) => {
+  return Node.findAll({
+    where: {
+      user_id: user_id,
+    },
+    attributes: attributes_to_include,
+  });
+};
+
+const getAllNotActivatedNodes = async (attributes_to_include) => {
+  return Node.findAll({
+    where: {
+      user_id: null,
+    },
+    attributes: attributes_to_include,
+  });
 };
 
 module.exports = {
   Node,
   createNode,
   getNodeById,
+  getAllNodes,
+  getAllNodesByUser,
+  getAllNotActivatedNodes,
 };
