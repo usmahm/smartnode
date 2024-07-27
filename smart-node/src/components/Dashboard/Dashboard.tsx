@@ -2,13 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./Dashboard.module.scss";
 import SubHeader from "../UIUnits/Header/SubHeader/SubHeader";
 import NoContentIcon from "@/assets/icons/noContentIcon.svg";
 import Button from "../UIUnits/Buttons/Button";
-import GroupCard from "./GroupCard/GroupCard";
+import GroupCard from "../UIUnits/GroupCard/GroupCard";
 import { useNodeContext } from "@/contexts/NodeContext";
+import NodeStateIcon from "@/assets/icons/nodeStateIcon.svg";
+import GroupIcon from "@/assets/icons/groupIcon.svg";
 import LoadingSpinner from "../UIUnits/LoadingSpinner/LoadingSpinner";
+import styles from "./Dashboard.module.scss";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -32,7 +34,18 @@ const Dashboard = () => {
         <div className={styles.container}>
           <h3 className={styles.groups}>Groups</h3>
           {groups.map((group) => (
-            <GroupCard key={group.name} name={group.name} nodes={group.nodes} />
+            <GroupCard
+              key={group.name}
+              name={group.name}
+              items={group.nodes}
+              groupIcon={<GroupIcon width={24} />}
+              groupItemCTA={(itemId) => (
+                <button onClick={() => {}} className={styles.right}>
+                  <NodeStateIcon width={18} />
+                </button>
+              )}
+              noItemText="No Node"
+            />
           ))}
         </div>
       );

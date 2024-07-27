@@ -1,40 +1,41 @@
 @import "../../shared/styles/shared.module.scss";
 @import "../../shared/styles/variables.modules.scss";
 
-// .noContent,
-// .loading {
-//   max-width: pxToRem(346);
-//   margin: 0 auto;
-//   margin-top: 70px;
-// }
+.noContent,
+.loading {
+  max-width: pxToRem(300);
+  margin: 0 auto;
+  // width: 100%;
+  // margin-top: 70px;
+}
 
-// .noContent {
-//   text-align: center;
+.noContent {
+  text-align: center;
 
-//   h3 {
-//     @include font(pxToRem(14), 700, $primary-color);
-//     margin-top: 10px;
-//     margin-bottom: 10px;
-//   }
+  h3 {
+    @include font(pxToRem(14), 700, $primary-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 
-//   p {
-//     @include font(pxToRem(12), 500, $primary-color);
-//     margin-bottom: 60px;
-//   }
-// }
+  p {
+    @include font(pxToRem(12), 500, $primary-color);
+    margin-bottom: 60px;
+  }
+}
 
-// .loading {
-//   @include CenterItemFlex;
-// }
+.loading {
+  @include CenterItemFlex;
+}
 
-// .groups {
-//   @include font(pxToRem(14), 700, $primary-color);
-//   margin-bottom: 40px;
-// }
+.container {
+  @include container;
 
-// .container {
-//   @include container;
-// }
+  .header {
+    @include font(pxToRem(14), 700, $primary-color);
+    margin-bottom: 40px;
+  }
+}
 
 .sectionBtns {
   margin-bottom: 10px;

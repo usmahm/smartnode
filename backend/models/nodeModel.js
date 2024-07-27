@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbConnection");
-const NodeTypes = require("../utils/constants");
+const { NODE_TYPES } = require("../utils/constants");
 
 const Node = sequelize.define(
   "Node",
@@ -20,7 +20,7 @@ const Node = sequelize.define(
     },
     type: {
       type: DataTypes.ENUM,
-      values: NodeTypes,
+      values: NODE_TYPES,
       allowNull: false,
     },
     state: {

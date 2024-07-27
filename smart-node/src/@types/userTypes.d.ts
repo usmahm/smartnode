@@ -12,4 +12,5 @@ export type LoginSuccesssResType = SuccessResponseType<{
   access_token: string;
 }>
 
+export type AdminUserType = Pick<UserType, 'id' | 'first_name' | 'last_name'>
 // export type LoginErrorResType = ErrorResponseType

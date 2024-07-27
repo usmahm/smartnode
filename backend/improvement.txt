@@ -1,12 +1,14 @@
 edit endpoints for appropriate endpoints
 
-- node/activate endpoint
+- node/activate endpoint ✅
   Prevent double activation of nodes (i.e adding multiple times)
-- Admin routes Protected with isAdmin middleware
-- get nodes/admin?user_id=id endpoint to get all nodes of a user - admin
-- get users
-- node to create new node on production
--
+
+- Admin routes Protected with isAdmin middleware ✅
+- get nodes/admin?user_id=id endpoint to get all nodes of a user - admin ✅
+- get users ✅
+- node to create new node on production ✅
+
+- get app admin ids
 
 - Update signup docmentation - body and response
 

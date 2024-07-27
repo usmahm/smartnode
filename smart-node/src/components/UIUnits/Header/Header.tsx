@@ -80,7 +80,7 @@ const Header: React.FC<Props> = ({ type }) => {
                   onClick={() => setOpenOptions((prev) => !prev)}
                   className={styles.profileIcon}
                 >
-                  <UserIcon height={24} />
+                  <UserIcon height={40} />
                 </button>
                 {openOptions && (
                   <div className={styles.options}>

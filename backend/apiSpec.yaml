@@ -21,13 +21,13 @@ tags:
   - name: Admin
     description: Admin routes
 paths:   
-  /users/{userId}:
+  /users/{user_id}:
     get:
       tags:
         - User
       summary: Gets user details by id
       parameters:
-        - name: userId
+        - name: user_id
           in: path
           required: true
           schema:
@@ -55,7 +55,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /auth/signup:
     post:
       tags:
@@ -168,27 +173,39 @@ paths:
                         type: array
                         items:
                           $ref: "#/components/schemas/NodeResponse"
-  /nodes/activate:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'                          
+  /nodes/{node_id}/activate:
     post:
       tags:
         - Node
       summary: Activates node for user
+      parameters:
+        - name: node_id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json: 
             schema:
               required:
-                - node_id
+                - name
                 - group_id
               type: object
               properties:
-                node_id:
-                  $ref: '#/components/schemas/Node/properties/id'
+                name:
+                  $ref: '#/components/schemas/Node/properties/name'
                 group_id:
                   type: string
                   format: uuid
       responses:
-        '201':
+        '200':
           description: Node activated successfully
           content:
             application/json: 
@@ -210,7 +227,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
-          description: Group not owned by user
+          description: Group not owned by user or not authenticated
           content:
             application/json:
               schema:
@@ -221,13 +238,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /nodes/{nodeId}:
+  /nodes/{node_id}:
     get:
       tags:
         - Node
       summary: Gets node details by id
       parameters:
-        - name: nodeId
+        - name: node_id
           in: path
           required: true
           schema:
@@ -255,13 +272,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /nodes/{nodeId}/startup-state:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /nodes/{node_id}/startup-state:
     get:
       tags:
         - Node
       summary: Gets node startup state, to be called by the node itself
       parameters:
-        - name: nodeId
+        - name: node_id
           in: path
           required: true
           schema:
@@ -294,13 +317,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /nodes/{nodeId}/state:
+  /nodes/{node_id}/state:
     post:
       tags:
         - Node
       summary: Change node's state
       parameters:
-        - name: nodeId
+        - name: node_id
           in: path
           required: true
           schema:
@@ -346,6 +369,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /groups:
     get:
       tags:
@@ -371,6 +400,12 @@ paths:
                         type: array
                         items:
                           $ref: "#/components/schemas/Group"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'                          
     post:
       tags:
         - Group
@@ -414,13 +449,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvalidBodyErrorResponse'
-  /groups/{groupId}:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'                
+  /groups/{group_id}:
     get:
       tags:
         - Group
       summary: Gets group by id
       parameters:
-        - name: groupId
+        - name: group_id
           in: path
           required: true
           schema:
@@ -449,6 +490,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'                    
   /admin/nodes:
       get:
         tags:
@@ -496,6 +543,12 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResponse'
+          '401':
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'                      
       post:
         tags:
           - Admin
@@ -549,6 +602,89 @@ paths:
                 application/json:
                   schema:
                     $ref: '#/components/schemas/ErrorResponse'
+            '401':
+              description: Unauthorized
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'                  
+  /admin/ids:
+    get:
+      tags:
+        - Admin
+      summary: Get admin ids
+      responses:
+        '200':
+          description: Admin ids fetched successfully
+          content:
+            application/json: 
+              schema:
+                properties:
+                  success:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                  data:
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              $ref: "#/components/schemas/User/properties/id"
+                            first_name:
+                              $ref: "#/components/schemas/User/properties/first_name"
+                            last_name:
+                              $ref: "#/components/schemas/User/properties/last_name"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/nodes/{node_id}/reset:
+    post:
+      tags:
+        - Admin
+      summary: Reset node to not activated
+      parameters:
+        - name: node_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+            '200':
+              description: Node reset successfully
+              content:
+                application/json: 
+                  schema:
+                    properties:
+                      success:
+                        type: boolean
+                        enum: [true]
+                      message:
+                        type: string
+            '404':
+              description: Node not found
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+            '403':
+              description: User not admin
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+            '401':
+              description: Unauthorized
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'                        
   /admin/users:
     get:
       tags:
@@ -591,6 +727,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'                    
 components:
   schemas:
     User:

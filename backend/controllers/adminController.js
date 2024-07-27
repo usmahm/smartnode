@@ -8,6 +8,7 @@ const {
 const { getAllUsers } = require("../models/userModel");
 const { checkIfValidationError } = require("../utils/customValidationResults");
 const sendResponse = require("../utils/sendResponse");
+const { ADMIN_IDS } = require("../utils/constants");
 
 const createNodeHandler = async (req, res, next) => {
   try {
@@ -113,11 +114,25 @@ const getUsersHandler = async (req, res, next) => {
   try {
     let users = await getAllUsers(["id", "first_name", "last_name"]);
 
-    sendResponse(res, 201, {
+    sendResponse(res, 200, {
       success: true,
       message: "Users fetched successfully",
       data: {
         users,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getAdminIDsHandler = async (req, res, next) => {
+  try {
+    sendResponse(res, 200, {
+      success: true,
+      message: "Admin IDs fetched successfully",
+      data: {
+        admins: ADMIN_IDS,
       },
     });
   } catch (err) {
@@ -130,4 +145,5 @@ module.exports = {
   getUsersHandler,
   getNodesHandler,
   resetNodeHandler,
+  getAdminIDsHandler,
 };

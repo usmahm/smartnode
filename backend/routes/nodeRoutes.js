@@ -1,7 +1,6 @@
 const express = require("express");
 const { body } = require("express-validator");
 const nodeController = require("../controllers/nodeController");
-const NodeTypes = require("../utils/constants");
 const { findGroupById } = require("../models/groupModel");
 const isAuth = require("../middlewares/isAuth");
 

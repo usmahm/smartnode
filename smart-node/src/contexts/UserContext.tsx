@@ -1,8 +1,11 @@
 import { LoginSuccesssResType, UserType } from "@/@types/userTypes";
+import { parseJwt } from "@/utils/functions";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useRouter } from "next/navigation";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import api from "../../api/api";
+import { ApiResponseType } from "@/@types/apiTypes";
 
 type UserContextType = {
   user: UserType | null;
@@ -22,7 +25,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const [user, setuser] = useState<UserType | null>(null);
+  const [user, setUser] = useState<UserType | null>(null);
   // const [token, setToken] = useState("");
 
   const loginHandler: UserContextType["loginHandler"] = async (
@@ -42,16 +45,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.data.data) {
         sessionStorage.setItem("token", res.data.data.access_token);
-        setuser(res.data.data.user);
+        setUser(res.data.data.user);
         toast.success("Login Successful");
 
-        console.log("HEYY Login", res.data);
         returnVal = true;
       }
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         toast.error(`${error.response?.data.message}`);
-        console.log("HEYY ERROR", error.response);
       }
     }
 
@@ -67,10 +68,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         userData
       );
 
-      console.log("HEYY Signup", res);
       if (res.data.data) {
         sessionStorage.setItem("token", res.data.data.access_token);
-        setuser(res.data.data.user);
+        setUser(res.data.data.user);
         toast.success("Signup Successful");
 
         returnVal = true;
@@ -78,7 +78,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         toast.error(`${error.response?.data.message}`);
-        console.log("HEYY ERROR", error.response);
       }
     }
 
@@ -91,6 +90,27 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       router.push("/login");
     } catch {}
   };
+
+  const fetchUserDetails = async (userId: string) => {
+    const res: ApiResponseType<{ user: UserType }> = await api.get(
+      `/users/${userId}`
+    );
+
+    if (res.data) {
+      setUser(res.data.user);
+    }
+  };
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      const parsed = parseJwt(token);
+
+      if (parsed.id) {
+        fetchUserDetails(parsed.id);
+      }
+    }
+  }, []);
 
   return (
     <UserContext.Provider

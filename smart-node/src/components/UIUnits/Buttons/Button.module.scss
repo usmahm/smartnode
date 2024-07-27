@@ -8,4 +8,11 @@
   @include CenterItemFlex;
   background-color: $primary-color;
   width: 100%;
+
+  &.sm {
+    height: pxToRem(28);
+    border-radius: 5px;
+    width: max-content;
+    padding: 0 20px;
+  }
 }
