@@ -31,8 +31,8 @@ type AdminContextType = {
   adminIds: string[] | null;
   loadingUserNodes: string;
   activeView: ViewsType;
-  activatingNode: boolean;
-  resettingNode: boolean;
+  creatingNode: boolean;
+  resettingNode: string;
   loadingUsers: boolean;
   loadingNotActivatedNodes: boolean;
   users: AdminUserType[] | null;
@@ -51,10 +51,10 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
   );
   const [loadingUserNodes, setLoadingUserNodes] =
     useState<AdminContextType["loadingUserNodes"]>("");
-  const [activatingNode, setActivatingNode] =
-    useState<AdminContextType["activatingNode"]>(false);
+  const [creatingNode, setCreatingNode] =
+    useState<AdminContextType["creatingNode"]>(false);
   const [resettingNode, setResettingNode] =
-    useState<AdminContextType["resettingNode"]>(false);
+    useState<AdminContextType["resettingNode"]>("");
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [loadingNotActivatedNodes, setLoadingNotActivatedNodes] =
     useState(false);
@@ -111,7 +111,8 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const createNewNode = async (nodeType: string) => {
-    setActivatingNode(true);
+    setCreatingNode(true);
+
     try {
       const res: ApiResponseType<{ node: AdminUserNodesType[""][0] }> =
         await api.post("/admin/nodes", {
@@ -119,20 +120,24 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
         });
 
       console.log("HEYY 444", res);
-      if (res.data) {
+      if (res.data && notActivatedNodes) {
         setNotActivatedNodes((prev) => {
-          if (!prev) return [res.data!.node];
-          return [...prev, res.data!.node];
+          if (res.data) {
+            if (!prev) return [res.data.node];
+            return [...prev, res.data.node];
+          }
+          return prev;
         });
       }
     } catch (err) {
       console.log("err", err);
     }
-    setActivatingNode(false);
+
+    setCreatingNode(false);
   };
 
   const resetNode: AdminContextType["resetNode"] = async (nodeId, userId) => {
-    setResettingNode(true);
+    setResettingNode(nodeId);
     try {
       await api.post(`/admin/nodes/${nodeId}/reset`);
 
@@ -157,7 +162,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch (err) {
       // console.log("err", err);
     }
-    setResettingNode(false);
+    setResettingNode("");
   };
 
   const loadAdminIds = async () => {
@@ -189,7 +194,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
         users,
         notActivatedNodes,
         loadingNotActivatedNodes,
-        activatingNode,
+        creatingNode,
         resettingNode,
         loadingUsers,
         loadingUserNodes,

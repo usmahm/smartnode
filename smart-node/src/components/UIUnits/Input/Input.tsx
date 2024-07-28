@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import OpenIcon from "@/assets/icons/arrowDownIcon.svg";
 import styles from "./Input.module.scss";
 
-type OptionType = {
+export type OptionType = {
   id: string;
   name: string;
 };
@@ -13,7 +13,7 @@ type Props = {
   value: string;
   options?: OptionType[];
   placeholder: string;
-  onChange: (val: string) => void;
+  onChange: (val: OptionType | string) => void;
 };
 
 const Input: React.FC<Props> = ({
@@ -69,7 +69,7 @@ const Input: React.FC<Props> = ({
                         <button
                           key={option.id}
                           onClick={(e) => {
-                            onChange(option.id);
+                            onChange(option);
                             setOpenDropDown(false);
                           }}
                         >

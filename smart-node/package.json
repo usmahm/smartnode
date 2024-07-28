@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-types": "tsc --noemit",
+    "pre-commit-check": "npm run check-types && npm run lint"
   },
   "dependencies": {
     "axios": "^1.7.2",

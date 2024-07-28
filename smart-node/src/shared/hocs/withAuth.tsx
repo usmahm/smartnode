@@ -19,6 +19,8 @@ const withAuth = <P extends object>(
     const pathname = usePathname();
     const [isAuth, setIsAuth] = useState(false);
 
+    const adminPaths = ["/admin", "/admin/node/new"];
+
     useEffect(() => {
       // redirect to login if not authenticated
       // redirect to dashboard if trying to access admin routes but not admin
@@ -26,7 +28,7 @@ const withAuth = <P extends object>(
       if (!token) {
         redirect("/login");
       } else {
-        if (pathname !== "/admin") {
+        if (!(pathname in adminPaths)) {
           setIsAuth(true);
         } else if (adminIds) {
           if (user && !adminIds.includes(user?.id)) {
@@ -36,7 +38,7 @@ const withAuth = <P extends object>(
           }
         }
       }
-    }, [router, adminIds, user, pathname]);
+    }, [router, adminIds, user, pathname, adminPaths]);
 
     return isAuth ? (
       <Layout headerType="AUTH">

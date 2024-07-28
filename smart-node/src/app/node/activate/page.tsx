@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import NewNodeForm from "@/components/NewNodeForm/NewNodeForm";
+import ActivateNodeForm from "@/components/forms/ActivateNodeForm/ActivateNodeForm";
 import withAuth from "@/shared/hocs/withAuth";
 
 const ActivateNodePage = () => {
-  return <NewNodeForm />;
+  return <ActivateNodeForm />;
 };
 
 export default withAuth(ActivateNodePage);

@@ -71,7 +71,7 @@ const Header: React.FC<Props> = ({ type }) => {
               {pathname === "/admin" && (
                 <IconButton
                   icon={<CreateIcon height={24} />}
-                  onClick={() => router.push(`/node/create`)}
+                  onClick={() => router.push(`/admin/create-node`)}
                   label="Create Node"
                 />
               )}

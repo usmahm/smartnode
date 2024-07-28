@@ -1,0 +1,19 @@
+@import "../../../shared/styles/shared.module.scss";
+@import "../../../shared/styles/variables.modules.scss";
+
+.wrapper {
+  @include container;
+  max-width: pxToRem(346);
+  margin: 0 auto;
+  margin-bottom: 40px;
+
+  .divider {
+    @include font(pxToRem(12), 600, $primary-color);
+    margin: 15px 0;
+    text-align: center;
+  }
+
+  .btn {
+    margin-top: 40px;
+  }
+}

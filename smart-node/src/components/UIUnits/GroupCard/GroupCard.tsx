@@ -12,13 +12,16 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 type Props = {
   name: string;
-  items: {
-    id: string;
-    name: string;
-  }[];
+  groupId?: string;
+  items: (Pick<NodeType, "id" | "name"> & { state?: NodeType["state"] })[];
   onOpen?: () => void;
   groupIcon: JSX.Element;
-  groupItemCTA: (itemId: string) => JSX.Element;
+  groupItemCTA: (data: {
+    name: string;
+    nodeId: string;
+    groupId: string;
+    state: NodeType["state"];
+  }) => JSX.Element;
   onClickItem?: (itemId: string) => void;
   noItemText: string;
   loadingItems?: boolean;
@@ -26,6 +29,7 @@ type Props = {
 
 const GroupCard: React.FC<Props> = ({
   name,
+  groupId,
   items,
   onOpen,
   groupIcon,
@@ -69,23 +73,19 @@ const GroupCard: React.FC<Props> = ({
               key={item.id}
               name={item.name}
               onClick={() => onClickItem && onClickItem(item.id)}
-              itemCTA={groupItemCTA(item.id)}
+              itemCTA={
+                groupId ? (
+                  groupItemCTA({
+                    name: item.name,
+                    nodeId: item.id,
+                    groupId,
+                    state: item.state || "0",
+                  })
+                ) : (
+                  <></>
+                )
+              }
             />
-            // <button
-            //   key={item.id}
-            //   onClick={() => router.push(`/node/${item.id}`)}
-            //   className={styles.item}
-            // >
-            //   <span className={styles.left}>
-            //     <NodeIcon width={18} />
-            //     <p>{item.name}</p>
-            //   </span>
-
-            //   {groupItemCTA(item.id)}
-            //   {/* <button className={styles.right}>
-            //     <NodeStateIcon width={18} />
-            //   </button> */}
-            // </button>
           ))}
           {loadingItems && (
             <div className={styles.i}>

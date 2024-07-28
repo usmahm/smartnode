@@ -28,6 +28,7 @@ const AdminDashboard = () => {
     loadNotActivatedNodes,
     loadingNotActivatedNodes,
     resetNode,
+    resettingNode,
   } = useAdminContext();
 
   useEffect(() => {
@@ -84,7 +85,7 @@ const AdminDashboard = () => {
         content = loadingEl("Users");
       } else if (users?.length) {
         content = contentEl(
-          "Users",
+          `Users (${users.length})`,
           <>
             {users.map((user) => (
               <GroupCard
@@ -93,11 +94,11 @@ const AdminDashboard = () => {
                 items={usersNodes[user.id] || []}
                 groupIcon={<UserIcon height={24} />}
                 onOpen={() => loadUserNodesHandler(user.id)}
-                groupItemCTA={(itemId) => (
+                groupItemCTA={(data) => (
                   <Button
-                    onClick={() => resetNode(itemId, user.id)}
-                    loading={itemId === ""}
-                    disabled={itemId === ""}
+                    onClick={() => resetNode(data.nodeId, user.id)}
+                    loading={resettingNode === data.nodeId}
+                    disabled={resettingNode === data.nodeId}
                     size="sm"
                   >
                     Reset
@@ -119,12 +120,12 @@ const AdminDashboard = () => {
         content = loadingEl("Nodes");
       } else if (notActivatedNodes?.length) {
         content = contentEl(
-          "Nodes",
+          `Nodes (${notActivatedNodes.length})`,
           <>
             {notActivatedNodes.map((node) => (
               <GroupItem
                 key={node.id}
-                name={`ID: ${node.id}`}
+                name={`Type: ${node.type} - ID: ${node.id}`}
                 itemCTA={
                   <Button
                     onClick={() => copyToClipboardHandler(node.id)}

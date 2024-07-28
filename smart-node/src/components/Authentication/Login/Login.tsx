@@ -35,13 +35,13 @@ const Login = () => {
       <Input
         title="Email"
         value={email}
-        onChange={(val) => setEmail(val)}
+        onChange={(val) => typeof val === "string" && setEmail(val)}
         placeholder="Please enter your email"
       />
       <Input
         title="Password"
         value={password}
-        onChange={(val) => setPassword(val)}
+        onChange={(val) => typeof val === "string" && setPassword(val)}
         placeholder="Please choose your password"
       />
 

@@ -54,31 +54,31 @@ const Login = () => {
       <Input
         title="First Name"
         value={firstName}
-        onChange={(val) => setFirstName(val)}
+        onChange={(val) => typeof val === "string" && setFirstName(val)}
         placeholder="Please enter your first name"
       />
       <Input
         title="Last Name"
         value={lastName}
-        onChange={(val) => setLastName(val)}
+        onChange={(val) => typeof val === "string" && setLastName(val)}
         placeholder="Please enter your last name"
       />
       <Input
         title="Email"
         value={email}
-        onChange={(val) => setEmail(val)}
+        onChange={(val) => typeof val === "string" && setEmail(val)}
         placeholder="Please enter your email"
       />
       <Input
         title="Password"
         value={password}
-        onChange={(val) => setPassword(val)}
+        onChange={(val) => typeof val === "string" && setPassword(val)}
         placeholder="Please choose your password"
       />
       <Input
         title="Confirm Password"
         value={confirmPassword}
-        onChange={(val) => setConfirmPassword(val)}
+        onChange={(val) => typeof val === "string" && setConfirmPassword(val)}
         placeholder="Please confirm entered password"
       />
 

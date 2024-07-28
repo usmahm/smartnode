@@ -1,7 +1,10 @@
 - Password input type
 - Improve error handling on inputs - Error validation
 - spport for different icon types
-
+- validate node id in form before submission
+- Fix input element type
+- Fix button hydration error
+- Icon for different node types available
 
 withAuth HOC - not working - get it to work
 - https://medium.com/@elijahthomas.dev/next-js-authentication-using-higher-order-components-c006f7d408c4
