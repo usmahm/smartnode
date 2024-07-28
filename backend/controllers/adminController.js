@@ -31,6 +31,7 @@ const createNodeHandler = async (req, res, next) => {
       },
     });
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };
@@ -79,7 +80,7 @@ const getNodesHandler = async (req, res, next) => {
 
     let nodes;
     if (user_id) {
-      nodes = await getAllNodesByUser(user_id, ["id", "name"]);
+      nodes = await getAllNodesByUser(user_id, ["id", "name", "type"]);
 
       // console.log(nodes);
       // if (!nodes) {
@@ -93,9 +94,9 @@ const getNodesHandler = async (req, res, next) => {
       //   throw error;
       // }
     } else if (not_activated) {
-      nodes = await getAllNotActivatedNodes(["id", "name"]);
+      nodes = await getAllNotActivatedNodes(["id", "name", "type"]);
     } else {
-      nodes = await getAllNodes(["id", "name"]);
+      nodes = await getAllNodes(["id", "name", "type"]);
     }
 
     sendResponse(res, 200, {

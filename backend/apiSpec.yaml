@@ -328,18 +328,18 @@ paths:
           required: true
           schema:
             type: string
-        - in: query
-          name: state
-          required: true
-          schema:
-              description: New state
-              type: boolean
-        - in: query
-          name: duration
-          schema:
-              description: New state duration
-              type: integer
-              format: int64
+      requestBody:
+        content:
+          application/json: 
+            schema:
+              required:
+                - state
+              type: object
+              properties:
+                state:
+                  $ref: '#/components/schemas/Node/properties/state'
+                duration:
+                  $ref: '#/components/schemas/Node/properties/state_duration'
       responses:
         '200':
           description: Node state updated successfully
@@ -356,7 +356,7 @@ paths:
                     type: object
                     properties:
                       node:
-                        $ref: '#/components/schemas/NodeResponse'
+                        $ref: '#/components/schemas/NodeStateChangeResponse'
         '400':
           description: Node creation unsuccessful
           content:
@@ -856,6 +856,16 @@ components:
     NodeStartupStateResponse:
       type: object
       properties:
+        state:
+          $ref: '#/components/schemas/Node/properties/state'
+        state_duration:
+          $ref: '#/components/schemas/Node/properties/state_duration'
+
+    NodeStateChangeResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Node/properties/id'
         state:
           $ref: '#/components/schemas/Node/properties/state'
         state_duration:

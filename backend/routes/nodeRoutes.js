@@ -3,6 +3,7 @@ const { body } = require("express-validator");
 const nodeController = require("../controllers/nodeController");
 const { findGroupById } = require("../models/groupModel");
 const isAuth = require("../middlewares/isAuth");
+const { NODE_STATES } = require("../utils//constants");
 
 const router = express.Router();
 
@@ -28,6 +29,13 @@ router.post(
     body("name").trim().notEmpty(),
   ],
   nodeController.activateNodeHandler
+);
+
+router.post(
+  "/:node_id/state",
+  isAuth,
+  [[body("state").isIn(NODE_STATES)], body("duration").optional().isNumeric()],
+  nodeController.changeNodeStateHandler
 );
 
 module.exports = router;

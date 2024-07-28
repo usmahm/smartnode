@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbConnection");
-const { NODE_TYPES } = require("../utils/constants");
+const { NODE_TYPES, NODE_STATES } = require("../utils/constants");
 
 const Node = sequelize.define(
   "Node",
@@ -24,9 +24,8 @@ const Node = sequelize.define(
       allowNull: false,
     },
     state: {
-      type: DataTypes.BOOLEAN,
-      // allowNull: false,
-      defaultValue: false,
+      type: DataTypes.ENUM,
+      values: NODE_STATES,
     },
     last_state_change: {
       type: DataTypes.DATE,
@@ -41,7 +40,7 @@ const Node = sequelize.define(
     hooks: {
       beforeCreate: async (node) => {
         if (node.state === undefined) {
-          node.state = false;
+          node.state = "0";
         }
         // if (!node.last_state_change) {
         //   node.last_state_change = new Date();

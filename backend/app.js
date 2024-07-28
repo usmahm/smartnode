@@ -6,7 +6,6 @@ const ip = require("ip");
 const swaggerUI = require("swagger-ui-express");
 const fs = require("fs");
 const YAML = require("yaml");
-const bodyParser = require("body-parser");
 
 const sequelize = require("./config/dbConnection");
 const sendResponse = require("./utils/sendResponse");
@@ -16,6 +15,7 @@ const nodeRoutes = require("./routes/nodeRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const mqttClient = require("./config/mqttClient");
 
 const file = fs.readFileSync("./apiSpec.yaml", "utf8");
 const swaggerDocument = YAML.parse(file);
@@ -70,6 +70,10 @@ app.use((error, req, res, next) => {
     `\nERROR - statusCode=${statusCode}, body=${JSON.stringify(body)}\n`
   );
   sendResponse(res, statusCode, body);
+});
+
+mqttClient.on("connect", () => {
+  console.log("MQTT Connection Extablished");
 });
 
 sequelize

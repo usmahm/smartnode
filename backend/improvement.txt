@@ -16,7 +16,7 @@ Future
 - different user types - hardcode for now
   normal
   admin
-- Implement pagination for required routes
+- Implement pagination and sorting for required routes
 - Delete node and group routes
 
 
