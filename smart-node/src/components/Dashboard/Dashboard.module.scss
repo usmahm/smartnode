@@ -35,3 +35,8 @@
 .container {
   @include container;
 }
+
+.right {
+  width: pxToRem(18.1);
+  height: pxToRem(18.1);
+}

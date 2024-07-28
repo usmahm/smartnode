@@ -26,7 +26,7 @@ type NodeContextType = {
   loadingGroups: boolean;
   creatingGroup: boolean;
   activatingNode: boolean;
-  changingNodeState: boolean;
+  changingNodeState: string;
   groups: GroupType[] | null;
 };
 
@@ -43,7 +43,8 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
     useState<NodeContextType["creatingGroup"]>(false);
   const [activatingNode, setActivatingNode] =
     useState<NodeContextType["activatingNode"]>(false);
-  const [changingNodeState, setChangingNodeState] = useState(false);
+  const [changingNodeState, setChangingNodeState] =
+    useState<NodeContextType["changingNodeState"]>("");
 
   const loadUserGroups = async () => {
     setLoadingGroups(true);
@@ -139,7 +140,7 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
     duration
   ) => {
     let success = false;
-    setChangingNodeState(true);
+    setChangingNodeState(nodeId);
     try {
       const res: ApiResponseType<{ node: NodeChangeStateResponse }> =
         await api.post(`/nodes/${nodeId}/state`, { state, duration });
@@ -171,7 +172,6 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
           });
         });
 
-        setChangingNodeState(false);
         success = true;
       }
     } catch (err) {
@@ -179,7 +179,7 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
       showApiErrorToast();
     }
 
-    setChangingNodeState(false);
+    setChangingNodeState("false");
     return success;
   };
 

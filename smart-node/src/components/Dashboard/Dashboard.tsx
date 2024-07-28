@@ -64,16 +64,25 @@ const Dashboard = () => {
               items={group.nodes}
               groupIcon={<GroupIcon width={24} />}
               groupItemCTA={(data) => (
-                <button
-                  onClick={() => toggleNodeStateHandler(data)}
-                  className={styles.right}
-                >
-                  {data.state === "0" ? (
-                    <NodeStateIcon width={18} />
-                  ) : (
-                    <NodeStateIconOn width={18} />
-                  )}{" "}
-                </button>
+                <>
+                  {changingNodeState === data.nodeId && (
+                    <div className={styles.right}>
+                      <LoadingSpinner sizedExtern />
+                    </div>
+                  )}
+                  {changingNodeState !== data.nodeId && (
+                    <button
+                      onClick={() => toggleNodeStateHandler(data)}
+                      className={styles.right}
+                    >
+                      {data.state === "0" ? (
+                        <NodeStateIcon width={18} />
+                      ) : (
+                        <NodeStateIconOn width={18} />
+                      )}{" "}
+                    </button>
+                  )}
+                </>
               )}
               noItemText="No Node"
             />
