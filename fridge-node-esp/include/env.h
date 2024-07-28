@@ -18,3 +18,17 @@
 // #define WIFI_PASSWORD "defcon-qqw"
 
 #define RELAY_ID 324
+
+// Cloud MQTT Server
+#define IP_P1 157
+#define IP_P2 245
+#define IP_P3 7
+#define IP_P4 140
+
+#define MQTT_PORT 1883
+
+#define MQTT_USERNAME "usmahm"
+#define MQTT_PASSWORD "defcon-digital"
+
+#define MQTT_SUB_SWITCH "switch/f347f387-3c7e-4386-aa6a-926bfd4d6bfd"
+#define MQTT_SUB_F_LEVEL "fluidlevel/f347f387-3c7e-4386-aa6a-926bfd4d6bfd"

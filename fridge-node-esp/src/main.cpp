@@ -4,6 +4,7 @@
 #include "wifi.h"
 #include "functions.h"
 #include "timeFunctions.h"
+#include "mqttClient.h"
 
 // Relay
 // unsigned long on_millis;
@@ -17,14 +18,16 @@ void setup() {
   Serial.begin(115200);
   pinMode(RELAY_PIN, OUTPUT);
   
-  initializeWifi();
+  MQTTClient::initializeMqtt();
+
+  // initializeWifi();
   
   initializeWebServer();
   
   CustomLogger::initializeCustomLogger();
   initializeTimeClient();
 
-  getCurrentStatus();
+  // getCurrentStatus();
 }
 
 void loop() {
