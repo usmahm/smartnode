@@ -31,5 +31,6 @@ Limitation: max port numbers - 65,535
 
 - MQQT
 https://randomnerdtutorials.com/cloud-mqtt-mosquitto-broker-access-anywhere-digital-ocean/
+  Read on QOS Usage
 
 - Learn about Node-required
