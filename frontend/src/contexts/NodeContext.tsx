@@ -128,10 +128,9 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
       // console.log("err", err);
       if (err.message === "Node doen't exist") {
         showApiErrorToast("Node doen't exist");
-        return;
+      } else {
+        showApiErrorToast();
       }
-
-      showApiErrorToast();
     }
 
     setActivatingNode(false);
