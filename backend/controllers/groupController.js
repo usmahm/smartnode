@@ -28,6 +28,7 @@ const createGroupHandler = async (req, res, next) => {
       },
     });
   } catch (err) {
+    console.log("EEHEHE");
     next(err);
   }
 };

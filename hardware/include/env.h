@@ -11,8 +11,14 @@
 // #define API_BASE_URL "http://192.168.1.98:3001"
 #define UTC_OFFSET 1 // Timezone UTC offset
 
-// #define WIFISSID "STARLINK"
+// #define WIFISSID "Starlink"
 // #define WIFI_PASSWORD ""
+
+// 123q890p12
+// Pierre's Galaxy A32
+
+// #define WIFISSID "Pierre's Galaxy A32"
+// #define WIFI_PASSWORD "123q890p12"
 
 // #define WIFISSID "usmahm"
 // #define WIFI_PASSWORD "defcon-qqw"
@@ -32,3 +38,5 @@
 
 #define MQTT_SUB_SWITCH "switch/f347f387-3c7e-4386-aa6a-926bfd4d6bfd"
 #define MQTT_SUB_F_LEVEL "fluidlevel/f347f387-3c7e-4386-aa6a-926bfd4d6bfd"
+// #define MQTT_SUB_SWITCH "switch/eaa7bf4b-6991-4016-aa40-8f96072c1159"
+// #define MQTT_SUB_F_LEVEL "fluidlevel/eaa7bf4b-6991-4016-aa40-8f96072c1159"

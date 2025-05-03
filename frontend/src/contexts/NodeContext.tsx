@@ -124,8 +124,13 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
       if (res.data) {
         return true;
       }
-    } catch (err) {
+    } catch (err: any) {
       // console.log("err", err);
+      if (err.message === "Node doen't exist") {
+        showApiErrorToast("Node doen't exist");
+        return;
+      }
+
       showApiErrorToast();
     }
 
