@@ -8,6 +8,7 @@ import { useAdminContext } from "@/contexts/AdminContext";
 import { useUserContext } from "@/contexts/UserContext";
 
 interface WithAuthProps {}
+const adminPaths = ["/admin", "/admin/node/new"];
 
 const withAuth = <P extends object>(
   Component: ComponentType<P>
@@ -19,8 +20,6 @@ const withAuth = <P extends object>(
     const pathname = usePathname();
     const [isAuth, setIsAuth] = useState(false);
 
-    const adminPaths = ["/admin", "/admin/node/new"];
-
     useEffect(() => {
       // redirect to login if not authenticated
       // redirect to dashboard if trying to access admin routes but not admin
@@ -28,9 +27,17 @@ const withAuth = <P extends object>(
       if (!token) {
         redirect("/login");
       } else {
-        if (!(pathname in adminPaths)) {
+        // if (!(pathname in adminPaths)) {
+        console.log(
+          "HEYYY 323",
+          pathname,
+          adminPaths,
+          !adminPaths.includes(pathname)
+        );
+        if (!adminPaths.includes(pathname)) {
           setIsAuth(true);
         } else if (adminIds) {
+          // console.log("HEYYY sdsdsd", adminIds, user?.id);
           if (user && !adminIds.includes(user?.id)) {
             redirect("/dashboard");
           } else if (user) {
@@ -38,7 +45,7 @@ const withAuth = <P extends object>(
           }
         }
       }
-    }, [router, adminIds, user, pathname, adminPaths]);
+    }, [router, adminIds, user, pathname]);
 
     return isAuth ? (
       <Layout headerType="AUTH">

@@ -41,14 +41,14 @@ app.use("/groups", groupRoutes);
 app.use("/admin", adminRoutes);
 
 // app.get("/relay_status", (req, res) => {
-//   console.log("Relay id -", req.params);
-//   console.log("Relay id --", req.query);
+//   // console.log("Relay id -", req.params);
+//   // console.log("Relay id --", req.query);
 //   res.status(200).json({ state: 1 });
 // });
 
 // app.post("/relay_status", (req, res) => {
-//   console.log(req.body);
-//   console.log("fridge_relay_status: ", req.body["fridge_relay_status"]);
+//   // console.log(req.body);
+//   // console.log("fridge_relay_status: ", req.body["fridge_relay_status"]);
 
 //   res.status(200).send("Relay status updated.");
 // });
@@ -66,28 +66,28 @@ app.use((error, req, res, next) => {
     success: false,
     message: "An internal error occured",
   };
-  console.log(
-    `\nERROR - statusCode=${statusCode}, body=${JSON.stringify(body)}\n`
-  );
+  // // console.log(
+  //   `\nERROR - statusCode=${statusCode}, body=${JSON.stringify(body)}\n`
+  // );
   sendResponse(res, statusCode, body);
 });
 
 mqttClient.on("connect", () => {
-  console.log("MQTT Connection Extablished");
+  // console.log("MQTT Connection Extablished");
 });
 
 sequelize
   .authenticate()
   .then(() => {
-    console.log("Connected to DB.");
+    // // console.log("Connected to DB.");
     return sequelize.sync();
   })
   .then(() => {
     app.listen(process.env.PORT || 3001, () => {
-      console.log(
-        `Listening on port ${
-          process.env.PORT || 3001
-        }. IP Address - ${ip.address()}`
-      );
+      // // console.log(
+      //   `Listening on port ${
+      //     process.env.PORT || 3001
+      //   }. IP Address - ${ip.address()}`
+      // );
     });
   });

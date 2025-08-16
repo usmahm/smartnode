@@ -49,7 +49,7 @@ const activateNodeHandler = async (req, res, next) => {
       },
     });
   } catch (err) {
-    // console.log(err);
+    // // console.log(err);
     next(err);
   }
 };
@@ -102,7 +102,7 @@ changeNodeStateHandler = async (req, res, next) => {
       });
     }
   } catch (err) {
-    // console.log("HEYY 222", err);
+    // // console.log("HEYY 222", err);
     next(err);
   }
 };

@@ -69,9 +69,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       );
 
       if (res.data.data) {
-        sessionStorage.setItem("token", res.data.data.access_token);
-        setUser(res.data.data.user);
-        toast.success("Signup Successful");
+        // [FIX]: Fix for demo, fix later
+        await loginHandler(userData.email, userData.password);
+        // sessionStorage.setItem("token", res.data.data.access_token);
+        // setUser(res.data.data.user);
+        // // console.log("HEYYY 111", res.data);
+        // toast.success("Signup Successful");
 
         returnVal = true;
       }

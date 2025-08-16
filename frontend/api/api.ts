@@ -11,10 +11,10 @@ api.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // Edit places where this is used when you add renew token functionality
 export const getToken = () => {
   const token = sessionStorage.getItem("token");
-  // console.log("HEYYY 444", token);
+  // // console.log("HEYYY 444", token);
   if (token) {
     // const token_payload = JSON.parse(window.atob(token));
-    // console.log(token_payload);
+    // // console.log(token_payload);
   }
 
   return token;

@@ -31,7 +31,7 @@ const createNodeHandler = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log(err);
+    // // console.log(err);
     next(err);
   }
 };
@@ -82,7 +82,7 @@ const getNodesHandler = async (req, res, next) => {
     if (user_id) {
       nodes = await getAllNodesByUser(user_id, ["id", "name", "type"]);
 
-      // console.log(nodes);
+      // // console.log(nodes);
       // if (!nodes) {
       //   const error = new Error();
       //   error.statusCode = 404;

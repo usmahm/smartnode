@@ -5,7 +5,7 @@ const { checkIfValidationError } = require("../utils/customValidationResults");
 const sendResponse = require("../utils/sendResponse");
 
 const generateAuthToken = (id, email) => {
-  console.log("HEYY 333", id, email);
+  // console.log("HEYY 333", id, email);
   return jwt.sign(
     {
       id: id,

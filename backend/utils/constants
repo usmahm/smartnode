@@ -1,8 +1,8 @@
 const NODE_TYPES = ["fluid_level", "switch"];
 
-const NODE_STATES = ["0", "1"];
+const ADMIN_IDS = process.env.ADMIN_IDS.split(" ");
 
-const ADMIN_IDS = ["ae5985fc-1fd8-49d7-b2b7-954b5fdf575b"];
+const NODE_STATES = ["0", "1"];
 
 module.exports = {
   NODE_TYPES,

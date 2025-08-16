@@ -41,7 +41,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    console.log(groups);
+    // console.log(groups);
   }, [groups]);
 
   let content = <></>;

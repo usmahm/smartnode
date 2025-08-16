@@ -45,7 +45,7 @@ const Login = () => {
         setSigninUp(false);
       }
     } else {
-      console.log("HEYY, Invalid input, handle better");
+      // console.log("HEYY, Invalid input, handle better");
     }
   };
 

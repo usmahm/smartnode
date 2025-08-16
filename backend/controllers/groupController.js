@@ -10,7 +10,7 @@ const createGroupHandler = async (req, res, next) => {
   try {
     checkIfValidationError(req);
 
-    console.log(req.body);
+    // console.log(req.body);
     const createdGroup = await createGroup({
       name: req.body.name,
       user_id: req.user.id,
@@ -19,7 +19,7 @@ const createGroupHandler = async (req, res, next) => {
     createdGroupJSON = createdGroup.toJSON();
 
     createdGroupJSON.nodes = [];
-    console.log(createdGroupJSON);
+    // console.log(createdGroupJSON);
     sendResponse(res, 201, {
       success: true,
       message: "Group created successfully",
@@ -28,7 +28,7 @@ const createGroupHandler = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log("EEHEHE");
+    // console.log("EEHEHE");
     next(err);
   }
 };
@@ -45,7 +45,7 @@ const getAllUserGroupsHandler = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log("ERR", err);
+    // console.log("ERR", err);
     next(err);
   }
 };

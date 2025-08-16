@@ -72,7 +72,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
         setUsers(res.data.users);
       }
     } catch (err) {
-      // console.log(err);
+      // // console.log(err);
     }
     setLoadingUsers(false);
   };
@@ -90,7 +90,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
         }));
       }
     } catch (err) {
-      // console.log(err);
+      // // console.log(err);
     }
     setLoadingUserNodes("");
   };
@@ -105,7 +105,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
         setNotActivatedNodes(res.data.nodes);
       }
     } catch (err) {
-      // console.log(err);
+      // // console.log(err);
     }
     setLoadingNotActivatedNodes(false);
   };
@@ -119,7 +119,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
           type: nodeType,
         });
 
-      console.log("HEYY 444", res);
+      // console.log("HEYY 444", res);
       if (res.data && notActivatedNodes) {
         setNotActivatedNodes((prev) => {
           if (res.data) {
@@ -130,7 +130,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
         });
       }
     } catch (err) {
-      console.log("err", err);
+      // console.log("err", err);
     }
 
     setCreatingNode(false);
@@ -160,7 +160,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
         };
       });
     } catch (err) {
-      // console.log("err", err);
+      // // console.log("err", err);
     }
     setResettingNode("");
   };
@@ -176,7 +176,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
         setAdminIds(res.data.admins);
       }
     } catch (err) {
-      // console.log(err);
+      // // console.log(err);
     }
     // setLoadingAdminIds(false);
   };

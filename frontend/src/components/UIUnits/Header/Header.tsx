@@ -32,9 +32,9 @@ const Header: React.FC<Props> = ({ type }) => {
     setOpenOptions(false);
   };
 
-  useEffect(() => {
-    console.log("HEYYY 333", openOptions);
-  }, [openOptions]);
+  // useEffect(() => {
+  //   // console.log("HEYYY 333", openOptions);
+  // }, [openOptions]);
 
   const renderHeader = () => {
     let headerEl = <></>;

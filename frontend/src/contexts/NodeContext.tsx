@@ -57,7 +57,7 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
         setGroups(res.data.groups);
       }
     } catch (err) {
-      // console.log(err);
+      // // console.log(err);
       showApiErrorToast();
     }
     setLoadingGroups(false);
@@ -84,7 +84,7 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
         return res.data.group;
       }
     } catch (err) {
-      // console.log(err);
+      // // console.log(err);
       showApiErrorToast();
     }
 
@@ -125,7 +125,7 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
         return true;
       }
     } catch (err: any) {
-      // console.log("err", err);
+      // // console.log("err", err);
       if (err.message === "Node doen't exist") {
         showApiErrorToast("Node doen't exist");
       } else {
@@ -179,7 +179,7 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
         success = true;
       }
     } catch (err) {
-      // console.log(err);
+      // // console.log(err);
       showApiErrorToast();
     }
 
