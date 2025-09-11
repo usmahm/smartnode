@@ -23,6 +23,11 @@
 <!-- ✅ Set **schedules** for automated control  -->
 <!--  ✅ View **analytics** on device usage and status  -->
 
+## ⚠️ Disclaimer  
+
+Yeah, I know, using a monorepo for backend, frontend, and hardware together isn’t the most ideal structure for long-term scalability.  
+But since I’m the only one working on this for now, I kept everything in a single repo to make life simple for myself 🌚.  
+
 ## **Tech Stack**  
 
 ### **Backend**  
