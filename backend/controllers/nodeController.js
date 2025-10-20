@@ -127,7 +127,7 @@ const getNodeState = async (req, res, next) => {
 
     const node = await getNodeById(node_id);
 
-    if (node) {
+    if (!node) {
       const error = new Error();
       error.statusCode = 404;
       error.body = {
