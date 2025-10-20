@@ -41,7 +41,7 @@ const Header: React.FC<Props> = ({ type }) => {
     switch (type) {
       case "UNAUTH":
         headerEl = (
-          <Link href="/dashboard" className={styles.unauth}>
+          <Link href="/" className={styles.unauth}>
             <LogoIcon height={44} />
           </Link>
         );
@@ -49,7 +49,7 @@ const Header: React.FC<Props> = ({ type }) => {
       case "AUTH":
         headerEl = (
           <>
-            <Link href="/dashboard">
+            <Link href="/">
               <LogoIcon height={44} />
             </Link>
             <div className={styles.aside}>

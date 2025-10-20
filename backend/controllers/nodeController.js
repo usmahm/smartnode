@@ -1,4 +1,5 @@
 const mqttClient = require("../config/mqttClient");
+const { socketClientsNodes, io } = require("../config/socket");
 const { createNode, getNodeById } = require("../models/nodeModel");
 const { checkIfValidationError } = require("../utils/customValidationResults");
 const sendResponse = require("../utils/sendResponse");
@@ -54,7 +55,7 @@ const activateNodeHandler = async (req, res, next) => {
   }
 };
 
-changeNodeStateHandler = async (req, res, next) => {
+const changeNodeStateHandler = async (req, res, next) => {
   try {
     checkIfValidationError(req);
 
@@ -75,7 +76,7 @@ changeNodeStateHandler = async (req, res, next) => {
         throw error;
       } else if (!node.user_id) {
         const error = new Error();
-        error.statusCode = 400;
+        error.statusCode = 404;
         error.body = {
           success: false,
           message: "Node not activated",
@@ -91,10 +92,24 @@ changeNodeStateHandler = async (req, res, next) => {
 
       await node.save();
 
-      mqttClient.publish(
-        `${process.env.MQTT_SWITCH_SUB_TOPIC}/${node_id}`,
-        state
-      );
+      // mqttClient.publish(
+      //   `${process.env.MQTT_SWITCH_SUB_TOPIC}/${node_id}`,
+      //   state
+      // );
+
+      // check if node is online and send new state, else, send error
+      if (!(node_id in socketClientsNodes)) {
+        const error = new Error();
+        error.statusCode = 400;
+        error.body = {
+          success: false,
+          message: "Node not online",
+        };
+
+        throw error;
+      }
+
+      io.to(node_id).emit("state", { state });
 
       sendResponse(res, 200, {
         success: true,
@@ -102,7 +117,36 @@ changeNodeStateHandler = async (req, res, next) => {
       });
     }
   } catch (err) {
-    // // console.log("HEYY 222", err);
+    next(err);
+  }
+};
+
+const getNodeState = async (req, res, next) => {
+  try {
+    const node_id = req.params.node_id;
+
+    const node = await getNodeById(node_id);
+
+    if (node) {
+      const error = new Error();
+      error.statusCode = 404;
+      error.body = {
+        success: false,
+        message: "Node doen't exist",
+      };
+
+      throw error;
+    }
+
+    sendResponse(res, 200, {
+      success: true,
+      message: "Group fetched successfully",
+      data: {
+        state: node.state,
+      },
+    });
+  } catch (err) {
+    console.log("ERR", err);
     next(err);
   }
 };
@@ -110,4 +154,5 @@ changeNodeStateHandler = async (req, res, next) => {
 module.exports = {
   activateNodeHandler,
   changeNodeStateHandler,
+  getNodeState,
 };

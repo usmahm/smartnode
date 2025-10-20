@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "api.h"
 
 unsigned long cur_state_duration; // millis
 unsigned long l_stat_changed_time; // millis
@@ -50,6 +50,7 @@ GetReqRes sendGetRequest(String path) {
     Serial.println(res.httpResponseCode);
     
     String payload = http.getString();
+    res.payload = payload;
     Serial.println(payload);
   } else {
     Serial.print("Error when sending GET: ");
@@ -112,6 +113,16 @@ void pastDurationCheck() {
 }
 
 void getCurrentStatus() {
-  GetReqRes res = sendGetRequest("/relay_status?id=" + String(RELAY_ID));
-  CustomLogger::println(res.payload);
+  GetReqRes res = sendGetRequest("/nodes/" + String(NODE_ID) + "/state");
+  
+  JsonDocument doc;
+  deserializeJson(doc, res.payload);
+  
+  if (doc["success"]) {
+    Serial.println("HEHEHEH");
+    String newState = doc["data"]["state"];
+    auto state_to_write = (newState == "0") ? HIGH : LOW;
+
+    toggleRelayStatus(state_to_write, 0);
+  }
 }
