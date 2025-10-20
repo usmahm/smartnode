@@ -1,9 +1,9 @@
-const admin_ids = ["ae5985fc-1fd8-49d7-b2b7-954b5fdf575b"];
+const { ADMIN_IDS } = require("../utils/constants");
 
 const isAdmin = (req, res, next) => {
   try {
     const user_id = req.user.id;
-    if (!admin_ids.includes(user_id)) {
+    if (!ADMIN_IDS.includes(user_id)) {
       throw new Error();
     }
   } catch (err) {

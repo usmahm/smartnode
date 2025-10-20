@@ -178,9 +178,8 @@ export const NodeProvider: React.FC<{ children: React.ReactNode }> = ({
 
         success = true;
       }
-    } catch (err) {
-      // // console.log(err);
-      showApiErrorToast();
+    } catch (err: any) {
+      showApiErrorToast(err?.message);
     }
 
     setChangingNodeState("false");

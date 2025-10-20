@@ -9,6 +9,7 @@ import { ApiResponseType } from "@/@types/apiTypes";
 
 type UserContextType = {
   user: UserType | null;
+  token: string;
   loginHandler: (email: string, password: string) => Promise<boolean>;
   signupHandler: (userData: {
     email: string;
@@ -26,7 +27,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const router = useRouter();
   const [user, setUser] = useState<UserType | null>(null);
-  // const [token, setToken] = useState("");
+  const [token, setToken] = useState("");
 
   const loginHandler: UserContextType["loginHandler"] = async (
     email,
@@ -45,6 +46,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.data.data) {
         sessionStorage.setItem("token", res.data.data.access_token);
+        setToken(res.data.data.access_token);
         setUser(res.data.data.user);
         toast.success("Login Successful");
 
@@ -90,6 +92,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const logoutHandler = () => {
     try {
       sessionStorage.removeItem("token");
+      setToken("");
       router.push("/login");
     } catch {}
   };
@@ -107,6 +110,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {
+      setToken(token);
       const parsed = parseJwt(token);
 
       if (parsed.id) {
@@ -122,6 +126,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         loginHandler,
         signupHandler,
         logoutHandler,
+        token,
       }}
     >
       {children}

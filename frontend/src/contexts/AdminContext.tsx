@@ -101,6 +101,7 @@ export const AdminContextProvider: React.FC<{ children: React.ReactNode }> = ({
       const res: ApiResponseType<{ nodes: AdminUserNodesType["s"] }> =
         await api.get("/admin/nodes?not_activated=true");
 
+      console.log("HEYYY 111", res);
       if (res.data) {
         setNotActivatedNodes(res.data.nodes);
       }

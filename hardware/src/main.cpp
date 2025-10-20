@@ -1,42 +1,33 @@
 #include <Arduino.h>
 #include "customLogger.h"
-#include "webServer.h"
 #include "wifi.h"
-#include "functions.h"
-#include "timeFunctions.h"
-#include "mqttClient.h"
-
-// Relay
-// unsigned long on_millis;
-// unsigned long on_duration = 18000000;
-// unsigned long on_duration = 300000;
-// bool is_on = false;
-// const uint8_t on_hour = 12;
-// const uint8_t on_minute = 40;
+#include "api.h"
+#include "websocket.h"
+// #include "webServer.h"
+// #include "timeFunctions.h"
+// #include "mqttClient.h"
 
 void setup() {
   Serial.begin(115200);
-  pinMode(RELAY_PIN, OUTPUT);
-  
-  MQTTClient::initializeMqtt();
+  Serial.setDebugOutput(true);
 
-  // initializeWifi();
-  
-  initializeWebServer();
+  for(uint8_t t = 4; t > 0; t--) {
+      Serial.printf("[SETUP] BOOT WAIT %d...\n", t);
+      Serial.flush();
+      delay(1000);
+  }
+
+  pinMode(RELAY_PIN, OUTPUT);
+  digitalWrite(RELAY_PIN, HIGH);
   
   CustomLogger::initializeCustomLogger();
-  initializeTimeClient();
+  // initializeWebServer();
+  // initializeTimeClient();
 
-  // getCurrentStatus();
+  websocketSetup();
+  getCurrentStatus();
 }
 
 void loop() {
-  String formatted = timeClient.getFormattedTime();
-  CustomLogger::println(formatted);
-
-  if (tracking) {
-    pastDurationCheck();
-  }
-  
-  delay(5000);
+  socketLoop();
 }

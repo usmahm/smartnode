@@ -28,12 +28,6 @@ const withAuth = <P extends object>(
         redirect("/login");
       } else {
         // if (!(pathname in adminPaths)) {
-        console.log(
-          "HEYYY 323",
-          pathname,
-          adminPaths,
-          !adminPaths.includes(pathname)
-        );
         if (!adminPaths.includes(pathname)) {
           setIsAuth(true);
         } else if (adminIds) {

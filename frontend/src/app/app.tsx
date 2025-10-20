@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { UserProvider } from "@/contexts/UserContext";
 import { NodeProvider } from "@/contexts/NodeContext";
 import { AdminContextProvider } from "@/contexts/AdminContext";
+import "../shared/styles/global.css";
 
 const App: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (

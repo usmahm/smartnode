@@ -16,11 +16,10 @@ const groupRoutes = require("./routes/groupRoutes");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const mqttClient = require("./config/mqttClient");
+const { socketClientsNodes, io, httpServer, app } = require("./config/socket");
 
 const file = fs.readFileSync("./apiSpec.yaml", "utf8");
 const swaggerDocument = YAML.parse(file);
-
-const app = express();
 
 // Adjust this to only allow some routes
 app.use(cors());
@@ -39,19 +38,6 @@ app.use("/nodes", nodeRoutes);
 app.use("/users", userRoutes);
 app.use("/groups", groupRoutes);
 app.use("/admin", adminRoutes);
-
-// app.get("/relay_status", (req, res) => {
-//   // console.log("Relay id -", req.params);
-//   // console.log("Relay id --", req.query);
-//   res.status(200).json({ state: 1 });
-// });
-
-// app.post("/relay_status", (req, res) => {
-//   // console.log(req.body);
-//   // console.log("fridge_relay_status: ", req.body["fridge_relay_status"]);
-
-//   res.status(200).send("Relay status updated.");
-// });
 
 app.use((req, res) => {
   sendResponse(res, 404, {
@@ -72,8 +58,27 @@ app.use((error, req, res, next) => {
   sendResponse(res, statusCode, body);
 });
 
-mqttClient.on("connect", () => {
-  // console.log("MQTT Connection Extablished");
+io.on("connection", (socket) => {
+  const nodeId = socket.handshake.query && socket.handshake.query.nodeId;
+
+  if (nodeId) {
+    console.log("Node connected:", nodeId, "socket.id=", socket.id);
+
+    // assign socket to a room named after the nodeid
+    socket.join(nodeId);
+
+    socketClientsNodes[nodeId] = socket.id;
+  } else {
+    console.log("Connected socket without nodeId:", socket.id);
+  }
+
+  console.log("New client connected");
+
+  socket.on("disconnect", (reason) => {
+    console.log("Disconnected", nodeId || socket.id, reason);
+
+    delete socketClientsNodes[nodeId];
+  });
 });
 
 sequelize
@@ -83,11 +88,21 @@ sequelize
     return sequelize.sync();
   })
   .then(() => {
-    app.listen(process.env.PORT || 3001, () => {
-      // // console.log(
-      //   `Listening on port ${
-      //     process.env.PORT || 3001
-      //   }. IP Address - ${ip.address()}`
-      // );
+    httpServer.listen(process.env.PORT || 3001, () => {
+      console.log(
+        `Listening on port ${
+          process.env.PORT || 3001
+        }. IP Address - ${ip.address()}`
+      );
     });
   });
+
+// function sendToNode(nodeId, eventName, payload) {
+//   // Emit to the room that has the same name as nodeId.
+//   io.to(nodeId).emit(eventName, payload);
+// }
+
+// // Example usage:
+// setInterval(() => {
+//   sendToNode("node-1122", "server_command", { hello: "device" });
+// }, 5000);
