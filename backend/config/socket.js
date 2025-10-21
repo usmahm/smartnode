@@ -10,7 +10,13 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   path: "/socket.io",
-  cors: { origin: "*" },
+  transports: ["websocket", "polling"],
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    transports: ["websocket", "polling"],
+    credentials: true,
+  },
 });
 
 module.exports = {

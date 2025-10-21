@@ -15,7 +15,7 @@ const nodeRoutes = require("./routes/nodeRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-const mqttClient = require("./config/mqttClient");
+// const mqttClient = require("./config/mqttClient");
 const { socketClientsNodes, io, httpServer, app } = require("./config/socket");
 
 const file = fs.readFileSync("./apiSpec.yaml", "utf8");
