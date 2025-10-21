@@ -144,6 +144,13 @@ const LandingPage = () => {
               >
                 {token ? "Dashboard" : "Log in"}
               </Link>
+              {/* <a
+                href={githubLink}
+                target="_blank"
+                className="bg-white text-primary px-4 py-2 rounded-md text-sm font-medium border border-primary hover:bg-gray-50"
+              >
+                View on GitHub
+              </a> */}
             </div>
           </div>
         </div>
@@ -356,7 +363,7 @@ const LandingPage = () => {
             <div className="relative pb-[56.25%] h-0">
               <iframe
                 className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&mute=1"
+                src="https://www.youtube.com/embed/vR_PxUNKaV8?autoplay=1&mute=1"
                 allowFullScreen
               ></iframe>
             </div>

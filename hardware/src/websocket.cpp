@@ -54,10 +54,10 @@ void websocketSetup() {
 
     // server address, port and URL
     if (LOCAL_API) {
-        Serial.println("INNNN");
+        // Serial.println("INNNN");
         socketIO.begin(API_ADDRESS, API_PORT, "/socket.io/?EIO=4&nodeId=" + String(NODE_ID));
     } else{
-        Serial.println("INNNN222");
+        // Serial.println("INNNN222");
         socketIO.beginSSL(API_ADDRESS, API_PORT, "/socket.io/?EIO=4&nodeId=" + String(NODE_ID));
     }
 

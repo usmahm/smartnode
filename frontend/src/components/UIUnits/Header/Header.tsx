@@ -52,7 +52,7 @@ const Header: React.FC<Props> = ({ type }) => {
         headerEl = (
           <>
             <Link href="/">
-              <LogoIcon height={44} />
+              <LogoIcon className="h-[25px] md:h-[44px]" />
             </Link>
             <div className={styles.aside}>
               {/* <IconButton
