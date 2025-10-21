@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import ArchitectureImg from "@/assets/images/smartnode_architecture.png";
 import DashboardImg from "@/assets/images/dashboard.png";
 import NodesImg from "@/assets/images/nodes.png";
@@ -9,6 +9,7 @@ import { useUserContext } from "@/contexts/UserContext";
 import LogoIcon from "@/assets/icons/logo.svg";
 import DashboardIcon from "@/assets/icons/dashboardIcon.svg";
 import CircuitIcon from "@/assets/icons/circuiitIcon.svg";
+import ReactGA from "react-ga4";
 
 const techStack: {
   [key: string]: {
@@ -88,6 +89,11 @@ const TechBadge = ({ name, library }: { name: string; library: string }) => (
 
 const LandingPage = () => {
   const { token } = useUserContext();
+
+  useEffect(() => {
+    ReactGA.initialize(process.env.NEXT_PUBLIC_G_ID);
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
 
   return (
     <>

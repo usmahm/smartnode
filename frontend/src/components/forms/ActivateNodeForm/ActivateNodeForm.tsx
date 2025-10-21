@@ -24,7 +24,7 @@ const ActivateNodeForm = () => {
   const [nodeId, setNodeId] = useState<string>("");
 
   const createGroupHandler = async () => {
-    const group = await createGroup(name);
+    const group = await createGroup(newGroup);
     if (group) {
       toast.success("Group created successfully");
       setGroup(group);

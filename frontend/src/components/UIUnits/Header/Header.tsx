@@ -11,6 +11,7 @@ import UserIcon from "@/assets/icons/userIcon.svg";
 import styles from "./Header.module.scss";
 import IconButton from "../Buttons/IconButton/IconButton";
 import Link from "next/link";
+import ReactGA from "react-ga4";
 import { useUserContext } from "@/contexts/UserContext";
 
 export type HeaderTypes = "UNAUTH" | "AUTH";
@@ -32,9 +33,10 @@ const Header: React.FC<Props> = ({ type }) => {
     setOpenOptions(false);
   };
 
-  // useEffect(() => {
-  //   // console.log("HEYYY 333", openOptions);
-  // }, [openOptions]);
+  useEffect(() => {
+    ReactGA.initialize(process.env.NEXT_PUBLIC_G_ID);
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
 
   const renderHeader = () => {
     let headerEl = <></>;
