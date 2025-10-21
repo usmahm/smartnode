@@ -1,11 +1,6 @@
 #include <Arduino.h>
 #include "customLogger.h"
-#include "wifi.h"
-#include "api.h"
 #include "websocket.h"
-// #include "webServer.h"
-// #include "timeFunctions.h"
-// #include "mqttClient.h"
 
 void setup() {
   Serial.begin(115200);
@@ -21,12 +16,10 @@ void setup() {
   digitalWrite(RELAY_PIN, HIGH);
   
   CustomLogger::initializeCustomLogger();
-  // initializeWebServer();
-  // initializeTimeClient();
 
   websocketSetup();
-  getCurrentStatus();
 }
+
 
 void loop() {
   socketLoop();

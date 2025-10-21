@@ -4,3 +4,6 @@
 .vscode/launch.json
 .vscode/ipch
 progress.txt
+.vscode/
+include/env.h
+.DS_Store

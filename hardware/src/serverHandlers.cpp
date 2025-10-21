@@ -1,22 +1,40 @@
 #include "serverHandlers.h"
 
-void postRelayStatusHandler(AsyncWebServerRequest *request) {
-  CustomLogger::println("In postRelayStatusHandler");
+unsigned long cur_state_duration; // millis
+unsigned long l_stat_changed_time; // millis
 
-  String status;
-  unsigned long duration = 0; // In minutes
+bool tracking = false;
+int cur_state;
 
-  if (request->hasParam("relay_status")) {
-    status = request->getParam("relay_status")->value();
+void toggleRelayStatus(int state, unsigned long duration) {
+  CustomLogger::print("Toggling Relay: ");
+  CustomLogger::print(RELAY_PIN);
+  CustomLogger::print(" -- ");
+  CustomLogger::print(state);
+  CustomLogger::print(" for ");
+  CustomLogger::print(duration);
+  CustomLogger::print(" milliseconds ");
+
+  
+  cur_state_duration = duration;
+  l_stat_changed_time = millis();
+
+  digitalWrite(RELAY_PIN, state);
+  cur_state = state;
+  
+  if (duration > 0) {
+    tracking = true;
   }
+}
 
-  if (request->hasParam("duration")) {
-    duration = request->getParam("duration")->value().toInt() * 60000;
+void pastDurationCheck() {
+  if (millis() - l_stat_changed_time > cur_state_duration) {
+    cur_state = cur_state == LOW ? HIGH : LOW;
+
+    digitalWrite(RELAY_PIN, cur_state);
+    
+    CustomLogger::println(String("Current turned ") + String(cur_state));
+    // postRelayStatus(cur_state);
+    tracking = false;
   }
-
-  auto state_to_write = (status == "0") ? HIGH : LOW;
-
-  toggleRelayStatus(state_to_write, duration);
-
-  request->send(200, "text/plain", "Success!");
 }

@@ -15,8 +15,11 @@
 #include <ArduinoJson.h>
 #include <Hash.h>
 
+#include <WiFiClientSecure.h>
+
 #include "env.h"
 #include "wifi.h"
+#include "serverHandlers.h"
 
 
 void websocketSetup();

@@ -18,7 +18,7 @@ void handleEvent(uint8_t *payload) {
 void socketIOEvent(socketIOmessageType_t type, uint8_t * payload, size_t length) {
     switch(type) {
         case sIOtype_DISCONNECT:
-            Serial.printf("[IOc] Disconnected!\n");
+            Serial.printf("[IOc] Disconnected!\n", payload);
             break;
         case sIOtype_CONNECT:
             Serial.printf("[IOc] Connected to url: %s\n", payload);
@@ -53,7 +53,13 @@ void websocketSetup() {
     initializeWifi();
 
     // server address, port and URL
-    socketIO.begin(API_ADDRESS, API_PORT, "/socket.io/?EIO=4&nodeId=" + String(NODE_ID));
+    if (LOCAL_API) {
+        Serial.println("INNNN");
+        socketIO.begin(API_ADDRESS, API_PORT, "/socket.io/?EIO=4&nodeId=" + String(NODE_ID));
+    } else{
+        Serial.println("INNNN222");
+        socketIO.beginSSL(API_ADDRESS, API_PORT, "/socket.io/?EIO=4&nodeId=" + String(NODE_ID));
+    }
 
     // event handler
     socketIO.onEvent(socketIOEvent);
