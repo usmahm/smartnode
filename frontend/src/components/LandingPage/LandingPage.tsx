@@ -60,7 +60,7 @@ const hyperlinks: {
 }[] = [
   {
     title: "What I built",
-    href: "#features",
+    href: "#built",
   },
   {
     title: "Skills",
@@ -91,6 +91,7 @@ const LandingPage = () => {
   const { token } = useUserContext();
 
   useEffect(() => {
+    console.log(process.env.NEXT_PUBLIC_G_ID);
     ReactGA.initialize(process.env.NEXT_PUBLIC_G_ID);
     ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }, []);
@@ -195,7 +196,7 @@ const LandingPage = () => {
         </div>
       </header>
 
-      <section id="features" className="py-16 bg-white bg-opacity-90">
+      <section id="built" className="py-16 bg-white bg-opacity-90">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
@@ -297,7 +298,7 @@ const LandingPage = () => {
             src={ArchitectureImg}
             alt="SmartNode System Architectures"
             // height={200}
-            className="w-auto h-[800px]"
+            className="w-full h-auto md:h-[800px] md:w-auto object-contain"
           />
         </div>
       </section>
@@ -312,13 +313,13 @@ const LandingPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
-              <div className="mx-auto flex items-center justify-center h-[300px] w-auto mb-4">
+              <div className="mx-auto flex items-center justify-center w-auto mb-4">
                 {/* <img src="/static/central-hub.jpg" alt="Central Hub" className="h-16 w-16 object-contain"> */}
                 <Image
                   src={DashboardImg}
                   alt="SmartNode System Architectures"
                   // height={200}
-                  className="h-full w-auto"
+                  className="w-full h-auto md:h-[300px] md:w-auto object-contain"
                 />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">
@@ -331,13 +332,13 @@ const LandingPage = () => {
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
-              <div className="mx-auto flex items-center justify-center h-[300px] w-auto mb-4">
+              <div className="mx-auto flex items-center justify-center w-auto mb-4">
                 {/* <img src="/static/switch-node.jpg" alt="Switch Node" className="h-16 w-16 object-contain"> */}
                 <Image
                   src={NodesImg}
                   alt="SmartNode System Architectures"
                   // height={200}
-                  className="h-full w-auto"
+                  className="w-full h-auto md:h-[300px] md:w-auto object-contain"
                 />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">
