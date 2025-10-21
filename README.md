@@ -13,7 +13,10 @@
 **SmartNode** is a modular **home automation system** that enables users to control and monitor electrical switches remotely through a web application. The system consists of:  
 - A **backend** that handles authentication, device management, and communication with IoT nodes.  
 - A **frontend** that provides a user-friendly interface for controlling and scheduling smart devices.  
-- An **IoT hardware module** that interacts with connected appliances and communicates with the backend via **Wi-Fi and MQTT**.  
+- An **IoT hardware module** that interacts with connected appliances and communicates with the backend via **Wi-Fi and MQTT**.
+
+## **Architecture**  
+<img width="913" height="1403" alt="smartnode_architecture" src="https://github.com/user-attachments/assets/17e5b44a-08f5-4bf2-800e-68b8b3cc84b4" />
 
 ## **Features**  
 ✅ Add and manage multiple smart nodes  
