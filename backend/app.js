@@ -58,28 +58,28 @@ app.use((error, req, res, next) => {
   sendResponse(res, statusCode, body);
 });
 
-io.on("connection", (socket) => {
-  const nodeId = socket.handshake.query && socket.handshake.query.nodeId;
+// io.on("connection", (socket) => {
+//   const nodeId = socket.handshake.query && socket.handshake.query.nodeId;
 
-  if (nodeId) {
-    console.log("Node connected:", nodeId, "socket.id=", socket.id);
+//   if (nodeId) {
+//     console.log("Node connected:", nodeId, "socket.id=", socket.id);
 
-    // assign socket to a room named after the nodeid
-    socket.join(nodeId);
+//     // assign socket to a room named after the nodeid
+//     socket.join(nodeId);
 
-    socketClientsNodes[nodeId] = socket.id;
-  } else {
-    console.log("Connected socket without nodeId:", socket.id);
-  }
+//     socketClientsNodes[nodeId] = socket.id;
+//   } else {
+//     console.log("Connected socket without nodeId:", socket.id);
+//   }
 
-  console.log("New client connected");
+//   console.log("New client connected");
 
-  socket.on("disconnect", (reason) => {
-    console.log("Disconnected", nodeId || socket.id, reason);
+//   socket.on("disconnect", (reason) => {
+//     console.log("Disconnected", nodeId || socket.id, reason);
 
-    delete socketClientsNodes[nodeId];
-  });
-});
+//     delete socketClientsNodes[nodeId];
+//   });
+// });
 
 sequelize
   .authenticate()
