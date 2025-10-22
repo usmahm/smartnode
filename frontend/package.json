@@ -11,6 +11,7 @@
     "pre-commit-check": "npm run check-types && npm run lint"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.5.0",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
     "next": "14.2.5",

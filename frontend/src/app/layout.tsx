@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 // import { Inter } from "next/font/google";
 import App from "./app";
-import ReactGA from "react-ga4";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 // const inter = Inter({ subsets: ["latin"] });
@@ -25,6 +25,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"></link> */}
       <body>
         <App>{children}</App>
+        <Analytics />
       </body>
     </html>
   );

@@ -91,7 +91,6 @@ const LandingPage = () => {
   const { token } = useUserContext();
 
   useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_G_ID);
     ReactGA.initialize(process.env.NEXT_PUBLIC_G_ID);
     ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }, []);
