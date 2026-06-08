@@ -236,6 +236,26 @@ const LandingPage = () => {
         </div>
       </section>
 
+      <section id="demo" className="relative pb-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl font-extrabold text-gray-900">Demo</h2>
+          <p className="mt-3 text-gray-500">
+            Demo of the SmartNode system in action, showing device control,
+            real-time updates, and admin management. Watch below.
+          </p>
+
+          <div className="mt-8 rounded-xl overflow-hidden shadow-xl border border-gray-200 w-full">
+            <div className="relative pb-[56.25%] h-0">
+              <iframe
+                className="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/vR_PxUNKaV8?autoplay=1&mute=1"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="skills" className="py-16 bg-gray-50 ">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
@@ -346,26 +366,6 @@ const LandingPage = () => {
               <p className="text-gray-500">
                 Relay-based IoT nodes used to control lights and outlets.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="demo" className="relative py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-extrabold text-gray-900">Demo</h2>
-          <p className="mt-3 text-gray-500">
-            Demo of the SmartNode system in action, showing device control,
-            real-time updates, and admin management. Watch below.
-          </p>
-
-          <div className="mt-8 rounded-xl overflow-hidden shadow-xl border border-gray-200 w-full">
-            <div className="relative pb-[56.25%] h-0">
-              <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/vR_PxUNKaV8?autoplay=1&mute=1"
-                allowFullScreen
-              ></iframe>
             </div>
           </div>
         </div>
