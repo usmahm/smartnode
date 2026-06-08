@@ -12,7 +12,13 @@ if (process.env.NODE_ENV === "test") {
     {
       dialect: "postgres",
       host: process.env.POSTGRES_DB_HOST, // "db host",
-    }
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
+    },
   );
 }
 
